@@ -24,13 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%y@mc7%xybun1rfi48qm3v7y1jwx+e+)4$#u_3ipi!r6m9dh4a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
 # Proxy
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-CSRF_TRUSTED_ORIGINS = ['https://localhost',]
+CSRF_TRUSTED_ORIGINS = ['https://night-walkers.onrender.com']
 
 # Application definition
 
