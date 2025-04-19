@@ -1,8 +1,8 @@
 import ChatHeader from "@/components/molecules/Chat/ChatHeader/ChatHeader";
 import ChatMessage from "@/components/molecules/Chat/ChatMessage/ChatMessage";
 import ChatInput from "@/components/molecules/Chat/ChatInput/ChatInput";
-import useChatUser from "./useChatUser";
 import { ChevronLeft } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 const ChatUser = ({
   selectedUser,
@@ -14,8 +14,16 @@ const ChatUser = ({
   handleUserTyping,
   listOfUsersTyping,
 }) => {
-  const { openSettingsId, setOpenSettingsId, messagesContainerRef } =
-    useChatUser();
+  const [openSettingsId, setOpenSettingsId] = useState(null);
+  const messagesContainerRef = useRef(null);
+
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.style.overflow = openSettingsId
+        ? "hidden"
+        : "auto";
+    }
+  }, [openSettingsId]);
 
   return (
     <div className="w-full h-full flex flex-col">

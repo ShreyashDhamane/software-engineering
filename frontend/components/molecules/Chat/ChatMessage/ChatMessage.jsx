@@ -6,7 +6,6 @@ import {
   isMessageSentWithin2Days,
 } from "@/utils/datetime";
 import Image from "next/image";
-import Loader from "../../Loader/Loader";
 import useChatMessage from "./useChatMessage";
 import { useNotification } from "@/app/custom-components/ToastComponent/NotificationContext";
 import { useEffect, useLayoutEffect } from "react";
@@ -27,7 +26,6 @@ const Message = ({
     isSettingsOpen,
     handleSettingsClick,
     settingsRef,
-
     handleCopy,
     handleDelete,
     handleEdit,
@@ -38,51 +36,53 @@ const Message = ({
     setSettingsDivDirection,
     isEditDialogOpen,
     setIsEditDialogOpen,
+    handleMessageSettingsPanelPosition,
+    setCurrentUserId,
+    handleClickOutside,
   } = useChatMessage(
     message,
     openSettingsId,
     setOpenSettingsId,
     setChatUserList,
-    selectedUser
+    selectedUser,
+    messagesContainerRef
   );
 
+  useEffect(() => {
+    // Only access localStorage after component mounts (client-side)
+    const user =
+      typeof window !== "undefined"
+        ? JSON.parse(localStorage.getItem("user"))
+        : null;
+    setCurrentUserId(user?.id || null);
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isSettingsOpen, setOpenSettingsId, settingsRef]);
+
   useLayoutEffect(() => {
-    if (messagesContainerRef.current && settingsRef.current && isSettingsOpen) {
-      const container = messagesContainerRef.current.getBoundingClientRect();
-      const settings = settingsRef.current.getBoundingClientRect();
+    if (
+      !(messagesContainerRef.current && settingsRef.current && isSettingsOpen)
+    )
+      return;
+    handleMessageSettingsPanelPosition();
 
-      const isOverlapping =
-        settings.top < container.top ||
-        settings.bottom > container.bottom ||
-        settings.left < container.left ||
-        settings.right > container.right;
-
-      //set the direction of the settings div based on the position of the message and the container
-      //  setSettingsDivDirection,
-      let direction = "left-bottom"; // Default direction
-      if (settings.bottom > container.bottom) {
-        if (settings.left < container.left) {
-          direction = "right-top"; // Right top
-        } else {
-          direction = "left-top"; // Left top
-        }
-      } else {
-        if (settings.left < container.left) {
-          direction = "right-bottom"; // Right bottom
-        } else {
-          direction = "left-bottom"; // Left bottom
-        }
-      }
-      console.log("Settings div direction:", direction);
-
-      setSettingsDivDirection(direction);
-    }
+    // Cleanup function to reset the settingsDivDirection when the component unmounts
+    return () => {
+      setSettingsDivDirection("left-bottom"); // Reset to default
+    };
   }, [isSettingsOpen]);
+
   const settingsClasses = clsx("absolute z-10 chatBackgroundDark w-40", {
     "top-6": settingsDivDirection === "left-bottom",
     "bottom-6": settingsDivDirection === "left-top",
     "left-6 bottom-2": settingsDivDirection === "right-top",
-    "left-6 bottom-6": settingsDivDirection === "right-bottom",
+    "left-6 top-4": settingsDivDirection === "right-bottom",
   });
 
   if (currentUserId === null) {

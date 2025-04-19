@@ -2,6 +2,7 @@
 import Loader from "@/components/molecules/Loader/Loader";
 import PostComment from "@/components/molecules/PostComments/PostComment/PostComment";
 import usePostComments from "@/components/molecules/PostComments/usePostComments";
+import { useEffect } from "react";
 
 export default function PostComments({
   post_id,
@@ -14,16 +15,21 @@ export default function PostComments({
   parent_comment_id = null,
   level = 1,
 }) {
-  const { isLoading, hasMore, loadMoreComments } = usePostComments(
-    post_id,
-    comments,
-    setComments,
-    setCommentsCount,
-    is_repost,
-    original_post_id,
-    is_reply,
-    parent_comment_id
-  );
+  const { isLoading, hasMore, loadMoreComments, page, fetchPostComments } =
+    usePostComments(
+      post_id,
+      comments,
+      setComments,
+      setCommentsCount,
+      is_repost,
+      original_post_id,
+      is_reply,
+      parent_comment_id
+    );
+
+  useEffect(() => {
+    fetchPostComments(page);
+  }, []);
 
   return (
     <div className="flex flex-col mx-1 mb-2 ">

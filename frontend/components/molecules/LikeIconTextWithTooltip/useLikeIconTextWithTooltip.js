@@ -53,7 +53,6 @@ export default function useLikeIconTextWithTooltip(
     let userHasLiked2 = null; // Moved outside try block
 
     try {
-
       if (
         !userHasLiked &&
         ["Like", "Clap", "Support", "Heart", "Bulb", "Laugh"].includes(
@@ -166,5 +165,6 @@ export default function useLikeIconTextWithTooltip(
     handleMouseEnter,
     handleMouseLeave,
     throttledHandleOnLike,
+    hoverTimeoutRef,
   };
 }

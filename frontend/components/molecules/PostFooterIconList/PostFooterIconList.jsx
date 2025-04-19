@@ -3,12 +3,10 @@ import IconText from "@/components/molecules/IconText/IconText";
 import LikeIconTextWithTooltip from "@/components/molecules/LikeIconTextWithTooltip/LikeIconTextWithTooltip";
 import { iconsData } from "@/constants/icons";
 import usePostFooterIconList from "./usePostFooterIconList";
-import { useNotification } from "@/app/custom-components/ToastComponent/NotificationContext";
 import { useEffect } from "react";
 
 const PostFooterIconList = ({
   handleClickOnComment,
-  setShowReportUserDialog,
   setLikesCount,
   setPosts,
   post,

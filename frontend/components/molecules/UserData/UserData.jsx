@@ -1,10 +1,10 @@
 "use client";
 import { getUserFullName } from "@/utils/string";
-import Loader from "../Loader/Loader";
 import UserImage from "@/components/atom/UserImage/UserImage";
 import Image from "next/image";
 import { fallbackUserProfileImage } from "@/constants/imageUrls";
 import UserDataSkeleton from "./UserDataSkeleton";
+import UserInfoSkeleton from "./UserInfoSkeleton";
 
 export default function UserData({
   isLoading,
@@ -62,12 +62,7 @@ export default function UserData({
       </div>
       <div className="flex flex-col bg-bg-post w-full mt-4 rounded-lg p-4 text-xs font-semibold text-forum-subheading border-dark">
         {isUserDataCardLoading || isLoading ? (
-          <div className="animate-pulse space-y-2">
-            <div className="h-5 w-full bg-gray-600 rounded"></div>
-            <div className="h-5 w-full bg-gray-600 rounded"></div>
-            <div className="h-5 w-full bg-gray-600 rounded"></div>
-            <div className="h-5 w-full bg-gray-600 rounded"></div>
-          </div>
+          <UserInfoSkeleton />
         ) : (
           <>
             <div className="flex justify-between mt-1">

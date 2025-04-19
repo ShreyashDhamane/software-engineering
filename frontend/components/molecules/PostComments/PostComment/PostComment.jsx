@@ -9,6 +9,7 @@ import ReportDialog from "@/components/organisms/ReportDialog/ReportDialog";
 import PostCommentUserImage from "./PostCommentUserImage/PostCommentUserImage";
 import PostCommentUserBody from "./PostCommentUserBody/PostCommentUserBody";
 import PostCommentOptionList from "./PostCommentOptionList/PostCommentOptionList";
+import { useEffect } from "react";
 
 export default function PostComment({
   parentComment,
@@ -47,7 +48,40 @@ export default function PostComment({
     isReportedCommentLoading,
     isEditCommentVisible,
     setIsEditCommentVisible,
+    hoverTimeoutRef2,
+    handleClickOutsideComment,
+    handleClickOutsideReportDialog,
   } = usePostComment(parentComment, post_id, original_post_id, is_repost);
+
+  // Cleanup the timeout when the component unmounts
+  useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef2.current) {
+        clearTimeout(hoverTimeoutRef2.current);
+      }
+    };
+  }, []);
+
+  // Function to close the dropdown when clicking outside
+  useEffect(() => {
+    // Add event listener when the component mounts
+    document.addEventListener("mousedown", handleClickOutsideComment);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideComment);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Add event listener when the component mounts
+    document.addEventListener("mousedown", handleClickOutsideReportDialog);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideReportDialog);
+    };
+  }, []);
 
   const userFullName = getUserFullName(
     parentComment?.user?.first_name || "Unknown",

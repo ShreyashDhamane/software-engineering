@@ -12,6 +12,7 @@ const ChatSidebar = ({
   const { handleSidebarUserClick } = useChatSidebar({
     setSelectedUser,
     setChatUserList,
+    setIsSidebarOpen,
   });
 
   return (

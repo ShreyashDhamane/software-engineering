@@ -1,26 +1,17 @@
 // components/NotificationTest.jsx
 "use client";
-import { useEffect, useState } from "react";
-import { fetchToken, setupForegroundListener } from "@/firebase";
-import useClipboard from "@/hooks/useClipboard";
+import { useEffect } from "react";
+import useEnableNotification from "./useEnableNotification";
 
 export default function NotificationTest() {
-  const [token, setToken] = useState(null);
-  const [lastMessage, setLastMessage] = useState(null);
-  const { copyToClipboard } = useClipboard();
+  const { token, lastMessage, getToken, copyToClipboard, setLastMessage } =
+    useEnableNotification();
   useEffect(() => {
     // Set up foreground listener
     const unsubscribe = setupForegroundListener((payload) => {
       setLastMessage(payload);
     });
 
-    // Get token automatically
-    const getToken = async () => {
-      const fcmToken = await fetchToken();
-      console.log("FCM Token:", fcmToken);
-
-      setToken(fcmToken);
-    };
     getToken();
 
     return () => {

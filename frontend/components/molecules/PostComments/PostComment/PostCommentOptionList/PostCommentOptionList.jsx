@@ -24,7 +24,8 @@ export default function PostCommentOptionList({
     parentComment.post_id,
     parentComment.id,
     setComments,
-    setCommentsCount
+    setCommentsCount,
+    setIsCommentOptionListVisible
   );
   let user = JSON.parse(localStorage.getItem("user"));
 

@@ -3,19 +3,23 @@
 import UserPostBottom from "@/components/molecules/UserPost/UserPostBottom/UserPostBottom";
 import UserPostHeader from "@/components/molecules/UserPost/UserPostHeader/UserPostHeader";
 import UserPostBody from "@/components/molecules/UserPost/UserPostBody/UserPostBody";
-import useUserPost from "./useUserPost";
 import UserImage from "@/components/atom/UserImage/UserImage";
 import { getUserFullName } from "@/utils/string";
 import { fallbackUserProfileImage } from "@/constants/imageUrls";
 import { ChevronsDown } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function UserPost({ post, setPosts }) {
-  const { commentsCount, setCommentsCount, likesCount, setLikesCount } =
-    useUserPost(post.likes_count, post.comments_count);
+  const [likesCount, setLikesCount] = useState(0);
+  const [commentsCount, setCommentsCount] = useState(0);
   const [showHiddenContent, setShowHiddenContent] = useState(false);
 
   const hasLowKarma = post.user_karma < 11;
+
+  useEffect(() => {
+    setLikesCount(post.likes_count);
+    setCommentsCount(post.comments_count);
+  }, []);
 
   return (
     <div className="flex flex-col rounded-lg w-full font-sans mb-2 bg-bg-post border-dark relative">
@@ -55,7 +59,9 @@ export default function UserPost({ post, setPosts }) {
 
       {hasLowKarma && !showHiddenContent ? (
         <div className="flex flex-col items-center justify-center p-4 text-forum-subheading2 text-center">
-          <p>User has insufficient karma, post contents are hidden by default</p>
+          <p>
+            User has insufficient karma, post contents are hidden by default
+          </p>
           <button
             onClick={() => setShowHiddenContent(true)}
             className="flex items-center gap-2 mt-2 text-forum-subheading hover:text-forum-subheading2 transition-colors"

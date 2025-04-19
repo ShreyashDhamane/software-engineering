@@ -6,7 +6,8 @@ export default function useChatMessage(
   openSettingsId,
   setOpenSettingsId,
   setChatUserList,
-  selectedUser
+  selectedUser,
+  messagesContainerRef
 ) {
   const [currentUserId, setCurrentUserId] = useState(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -15,6 +16,16 @@ export default function useChatMessage(
     useState("left-bottom");
   const settingsRef = useRef(null);
   const isSettingsOpen = openSettingsId === message.id;
+
+  const handleClickOutside = (e) => {
+    if (
+      isSettingsOpen &&
+      settingsRef.current &&
+      !settingsRef.current.contains(e.target)
+    ) {
+      setOpenSettingsId(null);
+    }
+  };
 
   const handleCopy = async () => {
     try {
@@ -53,32 +64,30 @@ export default function useChatMessage(
     }
   };
 
-  useEffect(() => {
-    // Only access localStorage after component mounts (client-side)
-    const user =
-      typeof window !== "undefined"
-        ? JSON.parse(localStorage.getItem("user"))
-        : null;
-    setCurrentUserId(user?.id || null);
-  }, []);
+  const handleMessageSettingsPanelPosition = () => {
+    const container = messagesContainerRef.current.getBoundingClientRect();
+    const settings = settingsRef.current.getBoundingClientRect();
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (
-        isSettingsOpen &&
-        settingsRef.current &&
-        !settingsRef.current.contains(e.target)
-      ) {
-        setOpenSettingsId(null);
+    //set the direction of the settings div based on the position of the message and the container
+    //  setSettingsDivDirection,
+    let direction = "left-bottom"; // Default direction
+    if (settings.bottom > container.bottom) {
+      if (settings.left < container.left) {
+        direction = "right-top";
+      } else {
+        direction = "left-top"; // Left top
       }
-    };
+    } else {
+      if (settings.left < container.left) {
+        direction = "right-bottom"; // Right bottom
+      } else {
+        direction = "left-bottom"; // Left bottom
+      }
+    }
+    console.log("settingsDivDirection", direction);
 
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isSettingsOpen, setOpenSettingsId, settingsRef]);
+    setSettingsDivDirection(direction);
+  };
 
   const handleSettingsClick = () => {
     // console.log("message settings clicked: ", message);
@@ -128,5 +137,8 @@ export default function useChatMessage(
     setSettingsDivDirection,
     isEditDialogOpen,
     setIsEditDialogOpen,
+    handleMessageSettingsPanelPosition,
+    setCurrentUserId,
+    handleClickOutside,
   };
 }

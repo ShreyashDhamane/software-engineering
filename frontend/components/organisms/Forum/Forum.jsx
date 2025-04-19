@@ -4,6 +4,8 @@ import UserData from "@/components/molecules/UserData/UserData";
 import PostInput from "@/components/molecules/PostInput/PostInput";
 import UserPosts from "@/components/organisms/Forum/UserPosts/UserPosts";
 import CustomLoaderPost from "@/components/molecules/CustomLoaderPost/CustomLoaderPost";
+import { useEffect } from "react";
+import userHeadings from "@/constants/headers";
 
 export default function Forums({ settingsType = "" }) {
   const {
@@ -19,7 +21,40 @@ export default function Forums({ settingsType = "" }) {
     userHeading,
     isUserDataCardLoading,
     userSideCardData,
+    setUserHeading,
+    fetchPosts,
+    getUserData,
+    loadMorePosts,
+    handleIntersection,
   } = useForum(settingsType);
+
+  useEffect(() => {
+    let userHeading =
+      userHeadings[Math.floor(Math.random() * userHeadings.length)];
+    setUserHeading(userHeading);
+    getUserData();
+    fetchPosts();
+  }, []);
+
+  useEffect(() => {
+    const currentLoaderRef = loaderRef.current;
+
+    if (!currentLoaderRef || !hasMore) return;
+
+    const observer = new IntersectionObserver(handleIntersection, {
+      root: null,
+      rootMargin: "20px",
+      threshold: 0.3,
+    });
+
+    observer.observe(currentLoaderRef);
+
+    return () => {
+      if (currentLoaderRef) {
+        observer.unobserve(currentLoaderRef);
+      }
+    };
+  }, [loadMorePosts, hasMore, isLoadingMore]);
 
   return (
     <div

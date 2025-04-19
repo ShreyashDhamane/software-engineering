@@ -1,6 +1,7 @@
 "use client";
 import PostCommentInput from "@/components/molecules/PostCommentInput/PostCommentInput";
 import PostComments from "@/components/molecules/PostComments/PostComments";
+import { useState } from "react";
 
 export default function UserPostCommentSection({
   post_id,

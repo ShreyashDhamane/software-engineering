@@ -10,6 +10,7 @@ import { useNotification } from "@/app/custom-components/ToastComponent/Notifica
 import { getUserFullName } from "@/utils/string";
 import { fallbackUserProfileImage } from "@/constants/imageUrls";
 import { closeDark, emojiDark, imagePickerDark } from "@/public/icons";
+import { useEffect } from "react";
 
 export default function PostDialog({
   onClick,
@@ -46,6 +47,7 @@ export default function PostDialog({
     isButtonDisabled,
     isLoading,
     postDialogRef,
+    handleClickOutside,
   } = usePostDialog(
     setPosts,
     onClick,
@@ -56,6 +58,7 @@ export default function PostDialog({
     is_repost,
     original_post_id
   );
+
   const { showError } = useNotification();
   let user = null;
 
@@ -66,6 +69,18 @@ export default function PostDialog({
     showError("Please login to post. User not found.");
     return null; // or handle the case when user is not found
   }
+
+  // Function to close the dropdown when clicking outside
+  useEffect(() => {
+    // Add event listener when the component mounts
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flex justify-center items-start pt-10 fixed w-full h-full bg-black bg-opacity-50 left-0 top-0 z-50">

@@ -16,11 +16,6 @@ export default function useForum(settingsType) {
   const loaderRef = useRef(null);
   const limit = 10; // Number of posts to fetch per request
   const [userHeading, setUserHeading] = useState(0);
-  useEffect(() => {
-    let userHeading =
-      userHeadings[Math.floor(Math.random() * userHeadings.length)];
-    setUserHeading(userHeading);
-  }, []);
 
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -34,27 +29,23 @@ export default function useForum(settingsType) {
   }
   const user = JSON.parse(userData);
 
-  // Fetch initial posts
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        setIsLoading(true);
-        const response = await apiGet(
-          `/forum/posts?user_id=${user?.id}&offset=0&limit=${limit}&settings_type=${settingsType}`
-        );
-        if (response) {
-          setUserPosts(response.posts);
-          setHasMore(response.has_more); // Update hasMore based on the response
-        }
-      } catch (error) {
-        showSuccess("Trending posts.");
-        console.error("Error fetching posts, it works though:", error);
-      } finally {
-        setIsLoading(false);
+  const fetchPosts = async () => {
+    try {
+      setIsLoading(true);
+      const response = await apiGet(
+        `/forum/posts?user_id=${user?.id}&offset=0&limit=${limit}&settings_type=${settingsType}`
+      );
+      if (response) {
+        setUserPosts(response.posts);
+        setHasMore(response.has_more); // Update hasMore based on the response
       }
-    };
-    fetchPosts();
-  }, [user?.id, showSuccess, settingsType, limit]);
+    } catch (error) {
+      showSuccess("Trending posts.");
+      console.error("Error fetching posts, it works though:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Fetch more posts
   const loadMorePosts = useCallback(async () => {
@@ -80,48 +71,25 @@ export default function useForum(settingsType) {
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasMore, isLoadingMore]);
 
-  useEffect(() => {
-    const currentLoaderRef = loaderRef.current;
+  const handleIntersection = (entries) => {
+    const [entry] = entries;
+    if (entry.isIntersecting && !isLoadingMore) {
+      loadMorePosts();
+    }
+  };
 
-    if (!currentLoaderRef || !hasMore) return;
+  const getUserData = async () => {
+    try {
+      const data = await apiGet(`/forum/user_data?user_id=${user?.id}`);
 
-    const handleIntersection = (entries) => {
-      const [entry] = entries;
-      if (entry.isIntersecting && !isLoadingMore) {
-        loadMorePosts();
-      }
-    };
-
-    const observer = new IntersectionObserver(handleIntersection, {
-      root: null,
-      rootMargin: "20px",
-      threshold: 0.3,
-    });
-
-    observer.observe(currentLoaderRef);
-
-    return () => {
-      if (currentLoaderRef) {
-        observer.unobserve(currentLoaderRef);
-      }
-    };
-  }, [loadMorePosts, hasMore, isLoadingMore]); // Dependencies that affect when we should observe
-
-  useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const data = await apiGet(`/forum/user_data?user_id=${user?.id}`);
-
-        setUserSideCardData(data);
-      } catch (error) {
-        showError("Error fetching user data");
-        console.error("Error fetching user data:", error);
-      } finally {
-        setIsUserDataCardLoading(false); // Set loading to false after fetching user data
-      }
-    };
-    getUserData();
-  }, [user?.id, showError]); // Added missing dependencies
+      setUserSideCardData(data);
+    } catch (error) {
+      showError("Error fetching user data");
+      console.error("Error fetching user data:", error);
+    } finally {
+      setIsUserDataCardLoading(false); // Set loading to false after fetching user data
+    }
+  };
 
   return {
     isLoading,
@@ -137,5 +105,11 @@ export default function useForum(settingsType) {
     userHeading,
     isUserDataCardLoading,
     userSideCardData,
+    settingsType,
+    fetchPosts,
+    getUserData,
+    setUserHeading,
+    loadMorePosts,
+    handleIntersection,
   };
 }

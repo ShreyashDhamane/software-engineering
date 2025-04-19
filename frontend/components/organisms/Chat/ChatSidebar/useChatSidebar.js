@@ -1,6 +1,10 @@
 import { useWebSocket } from "@/contexts/WebSocketContext";
 import { apiPost } from "@/utils/fetch/fetch";
-export default function useChatSidebar({ setSelectedUser, setChatUserList }) {
+export default function useChatSidebar({
+  setSelectedUser,
+  setChatUserList,
+  setIsSidebarOpen,
+}) {
   const { handleUserSelection } = useWebSocket();
 
   const handleUserSelect = async (chat) => {

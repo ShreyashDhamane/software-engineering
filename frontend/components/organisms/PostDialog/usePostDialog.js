@@ -130,26 +130,14 @@ export const usePostDialog = (
     }
   };
 
-  // Function to close the dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        postDialogRef.current &&
-        !postDialogRef.current.contains(event.target)
-      ) {
-        onClick(); // Close the dialog
-      }
-    };
-
-    // Add event listener when the component mounts
-    document.addEventListener("mousedown", handleClickOutside);
-
-    // Clean up the event listener when the component unmounts
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const handleClickOutside = (event) => {
+    if (
+      postDialogRef.current &&
+      !postDialogRef.current.contains(event.target)
+    ) {
+      onClick(); // Close the dialog
+    }
+  };
 
   return {
     handleSubmit,
@@ -158,5 +146,6 @@ export const usePostDialog = (
     isButtonDisabled,
     isLoading,
     postDialogRef,
+    handleClickOutside,
   };
 };

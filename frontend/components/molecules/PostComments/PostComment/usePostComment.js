@@ -176,50 +176,19 @@ export default function usePostComment(
     }
   };
 
-  // Cleanup the timeout when the component unmounts
-  useEffect(() => {
-    return () => {
-      if (hoverTimeoutRef2.current) {
-        clearTimeout(hoverTimeoutRef2.current);
-      }
-    };
-  }, []);
-
-  // Function to close the dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsCommentOptionListVisible(false); // Close the dropdown
-      }
-    };
-
-    // Add event listener when the component mounts
-    document.addEventListener("mousedown", handleClickOutside);
-
-    // Clean up the event listener when the component unmounts
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        reportCategoryDialogRef.current &&
-        !reportCategoryDialogRef.current.contains(event.target)
-      ) {
-        setShowReportCategoryDialog(false); // Close the dialog
-      }
-    };
-
-    // Add event listener when the component mounts
-    document.addEventListener("mousedown", handleClickOutside);
-
-    // Clean up the event listener when the component unmounts
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const handleClickOutsideComment = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsCommentOptionListVisible(false); // Close the dropdown
+    }
+  };
+  const handleClickOutsideReportDialog = (event) => {
+    if (
+      reportCategoryDialogRef.current &&
+      !reportCategoryDialogRef.current.contains(event.target)
+    ) {
+      setShowReportCategoryDialog(false); // Close the dialog
+    }
+  };
 
   return {
     isTooltipVisible,
@@ -249,5 +218,8 @@ export default function usePostComment(
     isReportedCommentLoading,
     isEditCommentVisible,
     setIsEditCommentVisible,
+    handleClickOutsideComment,
+    handleClickOutsideReportDialog,
+    hoverTimeoutRef2,
   };
 }
