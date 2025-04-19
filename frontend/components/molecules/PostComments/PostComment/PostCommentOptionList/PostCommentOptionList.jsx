@@ -7,18 +7,19 @@ import { deleteDark, editDark, ellipsisDark, reportDark } from "@/public/icons";
 export default function PostCommentOptionList({
   isCommentOptionListVisible,
   setIsCommentOptionListVisible,
-  setShowReportCategoryDialog,
   dropdownRef,
   parentComment,
   setComments,
   setCommentsCount,
-  setIsEditCommentVisible,
 }) {
   const {
     showDeleteCommentDialog,
     setShowDeleteCommentDialog,
     disableButtons,
     handleCommentDelete,
+    handleReportCommentClick,
+    handleEditCommentClick,
+    handleDeleteCommentClick,
   } = usePostCommentOptionList(
     parentComment.post_id,
     parentComment.id,
@@ -32,9 +33,7 @@ export default function PostCommentOptionList({
       <CustomDialogBox
         showDialog={showDeleteCommentDialog}
         dialogRef={null}
-        onClickNo={() => {
-          setShowDeleteCommentDialog(false);
-        }}
+        onClickNo={() => setShowDeleteCommentDialog(false)}
         onClickYes={handleCommentDelete}
         title="Delete Comment"
         description={`Are you sure you want to delete comment. This action cannot be undone.`}
@@ -64,10 +63,7 @@ export default function PostCommentOptionList({
             {parentComment?.user?.id !== user.id && (
               <li
                 className="hover:bg-forum-primary flex gap-2 pl-4 pr-5 py-1 hover:cursor-pointer justify-start items-center"
-                onClick={() => {
-                  setShowReportCategoryDialog(true);
-                  setIsCommentOptionListVisible(false);
-                }}
+                onClick={handleReportCommentClick}
                 data-testid="report-option"
               >
                 <Icon
@@ -85,11 +81,7 @@ export default function PostCommentOptionList({
             {parentComment?.user?.id === user.id && (
               <li
                 className="hover:bg-gray-100 flex gap-2 pl-4 pr-5 py-1 hover:cursor-pointer justify-start items-center"
-                onClick={() => {
-                  console.log(parentComment.id, "parentComment.id");
-                  setIsEditCommentVisible(true);
-                  setIsCommentOptionListVisible(false);
-                }}
+                onClick={handleEditCommentClick}
                 data-testid="edit-option"
               >
                 <Icon
@@ -107,10 +99,7 @@ export default function PostCommentOptionList({
             {parentComment?.user?.id === user.id && (
               <li
                 className="hover:bg-gray-100 flex gap-2 pl-4 pr-5 py-1 hover:cursor-pointer justify-start items-center"
-                onClick={() => {
-                  setShowDeleteCommentDialog(true);
-                  setIsCommentOptionListVisible(false);
-                }}
+                onClick={handleDeleteCommentClick}
                 data-testid="delete-option"
               >
                 <Icon

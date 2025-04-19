@@ -1,8 +1,3 @@
-import React from "react";
-import Loader from "../Loader/Loader";
-import UserPostHeader from "../UserPost/UserPostHeader/UserPostHeader";
-import UserImage from "@/components/atom/UserImage/UserImage";
-
 const CustomLoaderPost = () => {
   return (
     <div className="flex flex-col rounded-lg w-full font-sans mb-2 bg-bg-post border-dark relative animate-pulse">

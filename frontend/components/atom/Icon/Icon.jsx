@@ -62,22 +62,19 @@ export default function Icon({
     }
   };
 
+  const handleOnMouseEnter = () => {
+    setIsHovered(true);
+    if (onMouseEnter) {
+      onMouseEnter();
+    }
+  };
+
   return (
     <div
       onClick={handleClick} // Use our safe handler instead of directly passing onClick
       className={`${data} relative`} // tooltiptext positioned relative to icon
-      onMouseEnter={() => {
-        setIsHovered(true);
-        if (onMouseEnter) {
-          onMouseEnter();
-        }
-      }}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        if (onMouseLeave) {
-          onMouseLeave();
-        }
-      }}
+      onMouseEnter={() => {}}
+      onMouseLeave={handleOnMouseEnter}
     >
       <Image
         src={src}

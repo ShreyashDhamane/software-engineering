@@ -33,5 +33,10 @@ export default function useChatSidebar({ setSelectedUser, setChatUserList }) {
     }
   };
 
-  return { handleUserSelect };
+  const handleSidebarUserClick = (chatUser) => {
+    handleUserSelect(chatUser);
+    setIsSidebarOpen(false);
+  };
+
+  return { handleSidebarUserClick };
 }

@@ -29,6 +29,7 @@ export default function PostCommentInput({
     handleOnEmojiClick,
     isButtonDisabled,
     isLoading,
+    handleCommentButtonClick,
   } = usePostCommentInput(
     post_id,
     setCommentsCount,
@@ -42,6 +43,7 @@ export default function PostCommentInput({
     isEdit,
     setIsInputVisible
   );
+
   return (
     <div
       className={`flex justify-between text-sm ${
@@ -88,13 +90,7 @@ export default function PostCommentInput({
               {!isEdit ? (isLoading ? "Submitting..." : "Comment") : ""}
             </CommentButton>
             {isEdit && (
-              <CommentButton
-                theme={"red"}
-                onClick={() => {
-                  setIsInputVisible(false);
-                  setCommentContent("");
-                }}
-              >
+              <CommentButton theme={"red"} onClick={handleCommentButtonClick}>
                 Cancel
               </CommentButton>
             )}

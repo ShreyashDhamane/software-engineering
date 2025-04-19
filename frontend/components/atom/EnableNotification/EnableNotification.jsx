@@ -2,11 +2,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import { fetchToken, setupForegroundListener } from "@/firebase";
+import useClipboard from "@/hooks/useClipboard";
 
 export default function NotificationTest() {
   const [token, setToken] = useState(null);
   const [lastMessage, setLastMessage] = useState(null);
-
+  const { copyToClipboard } = useClipboard();
   useEffect(() => {
     // Set up foreground listener
     const unsubscribe = setupForegroundListener((payload) => {
@@ -40,7 +41,7 @@ export default function NotificationTest() {
           <div className="bg-gray-100 p-2 rounded break-all text-sm">
             {token}
             <button
-              onClick={() => navigator.clipboard.writeText(token)}
+              onClick={() => copyToClipboard(token)}
               className="ml-2 text-blue-500"
             >
               Copy

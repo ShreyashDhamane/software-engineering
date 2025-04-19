@@ -4,6 +4,7 @@ import Loader from "../Loader/Loader";
 import UserImage from "@/components/atom/UserImage/UserImage";
 import Image from "next/image";
 import { fallbackUserProfileImage } from "@/constants/imageUrls";
+import UserDataSkeleton from "./UserDataSkeleton";
 
 export default function UserData({
   isLoading,
@@ -13,7 +14,7 @@ export default function UserData({
   userSideCardData,
 }) {
   return (
-    <div className="text-text-forum-heading">
+    <div className="text-text-forum-heading w-full">
       <div className="relative  rounded-lg max-h-[210px] pb-4 w-full bg-bg-post">
         <div className="h-[58px] absolute left-0 top-0 w-full bg-purple-300 rounded-t-lg">
           <Image
@@ -28,19 +29,7 @@ export default function UserData({
           {/* Conditional rendering: Skeleton or actual content */}
           {isLoading ? (
             // Skeleton Loader (gradient shimmer)
-            <div className="animate-pulse">
-              {/* Profile image placeholder */}
-              <div className="relative inline-block justify-start bg-gray-600 rounded-full p-[1.5px]">
-                <div className="w-[70px] h-[70px] rounded-full bg-gray-700" />
-              </div>
-
-              {/* Text placeholders (shimmer effect) */}
-              <div className="mt-3 space-y-2">
-                <div className="h-6 w-3/4 bg-gray-600 rounded" />
-                <div className="h-4 w-1/2 bg-gray-600 rounded" />
-                <div className="h-4 w-2/3 bg-gray-600 rounded" />
-              </div>
-            </div>
+            <UserDataSkeleton />
           ) : (
             // Actual content when loaded
             <>

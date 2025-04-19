@@ -12,6 +12,10 @@ export default function ReportDialog({
   reportedCategorySelected,
   reportedCategoryNotSelected,
 }) {
+  const handleOnCloseClick = () => {
+    setShowReportCategoryDialog(false);
+    setReportCategorySelectedIndex(null);
+  };
   return (
     <div className="fixed top-0 left-0 bg-black h-full w-full flex justify-center items-center z-30 bg-opacity-50">
       <div
@@ -27,10 +31,7 @@ export default function ReportDialog({
               width={35}
               height={35}
               alt={"Close"}
-              onClick={() => {
-                setShowReportCategoryDialog(false);
-                setReportCategorySelectedIndex(null);
-              }}
+              onClick={handleOnCloseClick}
             />
           </div>
         </div>
@@ -43,9 +44,7 @@ export default function ReportDialog({
                 <div
                   key={index}
                   className="flex items-center mr-4 mb-3"
-                  onClick={() => {
-                    setReportCategorySelectedIndex(index);
-                  }}
+                  onClick={() => setReportCategorySelectedIndex(index)}
                 >
                   <label
                     htmlFor={index}

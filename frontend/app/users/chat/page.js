@@ -21,14 +21,14 @@ const ChatHome = () => {
     listOfUsersTyping,
   } = useChat();
 
+  const handleResize = () => {
+    if (window.innerWidth < 768 && !selectedUser) {
+      setIsSidebarOpen(true);
+    }
+  };
+
   // Show sidebar by default on mobile when no user is selected
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768 && !selectedUser) {
-        setIsSidebarOpen(true);
-      }
-    };
-
     // Set initial state
     handleResize();
 
@@ -85,9 +85,7 @@ const ChatHome = () => {
                 setSelectedUser={setSelectedUser}
                 onlineUsers={onlineUsers}
                 setChatUserList={setChatUserList}
-                setIsSidebarOpen={() => {
-                  setIsSidebarOpen(false);
-                }}
+                setIsSidebarOpen={() => setIsSidebarOpen(false)}
                 listOfUsersTyping={listOfUsersTyping}
               />
             )}

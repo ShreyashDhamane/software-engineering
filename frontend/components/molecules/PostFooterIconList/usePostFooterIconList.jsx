@@ -84,11 +84,20 @@ export default function usePostFooterIconList(post, setPosts) {
     }
   };
 
+  const handleReportPostClick = () => {
+    if (post.is_reported) {
+      showError("You have already reported this post");
+      return;
+    }
+    setShowReportUserDialog(true);
+  };
+
   return {
     userHasLiked,
     setUserHasLiked,
     likeType,
     setLikeType,
     handleRepost,
+    handleReportPostClick,
   };
 }

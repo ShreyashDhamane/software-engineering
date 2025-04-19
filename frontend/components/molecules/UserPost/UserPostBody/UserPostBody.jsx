@@ -3,8 +3,7 @@ import Image from "next/image";
 import useUserPostBody from "./useUserPostBody";
 
 export default function UserPostBody({ content, image_urls }) {
-  const { getPostContent, showDetailedView, setShowDetailedView } =
-    useUserPostBody(content, 70);
+  const { getPostContent } = useUserPostBody(content, 70);
   return (
     <>
       <div className="px-4 mt-2 text-forum-subheading">

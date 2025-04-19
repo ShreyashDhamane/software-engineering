@@ -37,11 +37,27 @@ export default function usePostCommentOptionList(
       setDisableButtons(false);
     }
   };
+  const handleReportCommentClick = () => {
+    setShowReportCategoryDialog(true);
+    setIsCommentOptionListVisible(false);
+  };
 
+  const handleEditCommentClick = () => {
+    setIsEditCommentVisible(true);
+    setIsCommentOptionListVisible(false);
+  };
+
+  const handleDeleteCommentClick = () => {
+    setShowDeleteCommentDialog(true);
+    setIsCommentOptionListVisible(false);
+  };
   return {
     showDeleteCommentDialog,
     setShowDeleteCommentDialog,
     disableButtons,
     handleCommentDelete,
+    handleReportCommentClick,
+    handleEditCommentClick,
+    handleDeleteCommentClick,
   };
 }

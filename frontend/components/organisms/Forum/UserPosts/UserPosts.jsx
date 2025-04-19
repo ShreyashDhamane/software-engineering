@@ -1,13 +1,7 @@
 "use client";
 import UserPost from "../UserPost/UserPost";
 
-export default function UserPosts({
-  userPosts,
-  setUserPosts,
-  hasMore,
-  loaderRef,
-  isLoadingMore,
-}) {
+export default function UserPosts({ userPosts, setUserPosts }) {
   return (
     <div>
       {userPosts.map((post) => (

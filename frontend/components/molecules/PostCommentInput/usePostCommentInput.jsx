@@ -3,7 +3,6 @@ import { useEmojiPicker } from "@/hooks/useEmojiPicker";
 import { useState } from "react";
 import { apiPost } from "@/utils/fetch/fetch";
 import { useNotification } from "@/app/custom-components/ToastComponent/NotificationContext";
-import { fallbackUserProfileImage } from "@/constants/imageUrls";
 export default function usePostCommentInput(
   post_id,
   setCommentsCount,
@@ -15,7 +14,7 @@ export default function usePostCommentInput(
   setRepliesCount = null,
   initialContent = "",
   isEdit = false,
-  setisInputVisible = null
+  setIsInputVisible = null
 ) {
   const {
     emojiPickerRef,
@@ -128,6 +127,11 @@ export default function usePostCommentInput(
     }
   };
 
+  const handleCommentButtonClick = () => {
+    setIsInputVisible(false);
+    setCommentContent("");
+  };
+
   return {
     handleCommentSubmit,
     commentContent,
@@ -138,5 +142,6 @@ export default function usePostCommentInput(
     handleOnEmojiClick,
     isButtonDisabled, // Expose the button disabled state
     isLoading, //
+    handleCommentButtonClick,
   };
 }

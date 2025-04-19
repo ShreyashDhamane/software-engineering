@@ -46,9 +46,7 @@ export default function LikeIconTextWithTooltip({
         text={iconData.text}
         user_has_liked={userHasLiked} // Pass the liked state to IconText
         like_type={likeType} // Pass the like type to IconText
-        onClick={() => {
-          throttledHandleOnLike("Like"); // Handle like action
-        }} // Handle like action
+        onClick={() => throttledHandleOnLike("Like")} // Handle like action
       />
 
       {/* Tooltip Div */}

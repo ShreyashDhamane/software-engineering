@@ -87,9 +87,7 @@ export default function PostCommentUserBody({
                 )}`}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => {
-                  throttledHandleOnLikeComment("Like");
-                }}
+                onClick={() => throttledHandleOnLikeComment("Like")}
               >
                 {likeType ?? "Like"}
               </p>
@@ -121,9 +119,7 @@ export default function PostCommentUserBody({
               {repliesCount > 0 && (
                 <p
                   className="p-1 rounded-sm text-forum-heading2 font-semibold hover:cursor-pointer"
-                  onClick={() => {
-                    setShowCommentReply(!showCommentReply);
-                  }}
+                  onClick={() => setShowCommentReply(!showCommentReply)}
                 >
                   {repliesCount > 1 ? `${repliesCount} Replies` : "1 Reply"}
                 </p>

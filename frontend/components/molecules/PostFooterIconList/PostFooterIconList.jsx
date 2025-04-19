@@ -15,12 +15,19 @@ const PostFooterIconList = ({
   isReported,
   setIsReported,
 }) => {
-  const { userHasLiked, setUserHasLiked, likeType, setLikeType, handleRepost } =
-    usePostFooterIconList(post, setPosts);
-  const { showError } = useNotification();
+  const {
+    userHasLiked,
+    setUserHasLiked,
+    likeType,
+    setLikeType,
+    handleRepost,
+    handleReportPostClick,
+  } = usePostFooterIconList(post, setPosts);
+
   useEffect(() => {
     setIsReported(post.is_reported);
   }, [post.is_reported, setIsReported]);
+
   return (
     <div className="flex flex-1 relative">
       <div className="flex-1 group ">
@@ -58,16 +65,7 @@ const PostFooterIconList = ({
           text={iconsData[2].text}
         />
       </div>
-      <div
-        className="flex-1"
-        onClick={() => {
-          if (post.is_reported) {
-            showError("You have already reported this post");
-            return;
-          }
-          setShowReportUserDialog(true);
-        }}
-      >
+      <div className="flex-1" onClick={handleReportPostClick}>
         <IconText
           src={iconsData[3].src}
           width={iconsData[3].width}

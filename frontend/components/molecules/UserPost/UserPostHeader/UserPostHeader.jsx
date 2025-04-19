@@ -34,6 +34,8 @@ export default function UserPostHeader({
     handleDeletePost,
     isPostDialogOpen,
     setIsPostDialogOpen,
+    handleEditPostClick,
+    handleDeletePostClick,
   } = useUserPostHeader(post_user_id, setPosts, post_id);
   return (
     <div className="flex flex-row px-4 pt-3">
@@ -41,9 +43,7 @@ export default function UserPostHeader({
         <CustomDialogBox
           showDialog={deletePostConfirmation}
           dialogRef={postOptionListRef}
-          onClickNo={() => {
-            setDeletePostConfirmation(false);
-          }}
+          onClickNo={() => setDeletePostConfirmation(false)}
           onClickYes={handleDeletePost}
           title="Delete Post"
           description={`Are you sure you want to delete this post. This action cannot be undone.`}
@@ -72,10 +72,7 @@ export default function UserPostHeader({
           <ul>
             <li
               className="hover:bg-gray-100 flex gap-2 pl-4 pr-5 py-1 hover:cursor-pointer"
-              onClick={() => {
-                setIsPostDialogOpen(true);
-                setIsPostOptionListVisible(false);
-              }}
+              onClick={handleEditPostClick}
             >
               <Icon
                 src={"/icons/pencil.png"}
@@ -89,10 +86,7 @@ export default function UserPostHeader({
 
             <li
               className="hover:bg-gray-100 flex gap-2 pl-4 pr-5 py-1 hover:cursor-pointer"
-              onClick={() => {
-                setDeletePostConfirmation(true);
-                setIsPostOptionListVisible(false);
-              }}
+              onClick={handleDeletePostClick}
             >
               <Icon
                 src={"/icons/delete.png"}

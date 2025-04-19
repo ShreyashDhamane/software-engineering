@@ -12,11 +12,11 @@ export default function useUserPostHeader(post_user_id, setPosts, post_id) {
   const [isPostDialogOpen, setIsPostDialogOpen] = useState(false);
   const postOptionListRef = useRef(null);
   const { showError, showSuccess } = useNotification();
-  
+
   // Move user retrieval inside the effect or handler functions
   // instead of at the top level with early returns
   const [userId, setUserId] = useState(null);
-  
+
   // Use an effect to load the user ID once on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -38,7 +38,7 @@ export default function useUserPostHeader(post_user_id, setPosts, post_id) {
         showError("Please login to follow a user. User not found.");
         return;
       }
-      
+
       setIsFollowButtonDisabled(true);
       setPosts((prev) => {
         return prev.map((post) => {
@@ -48,7 +48,7 @@ export default function useUserPostHeader(post_user_id, setPosts, post_id) {
           return post;
         });
       });
-      
+
       await apiPost(`/forum/posts/follow/${post_user_id}/`, {
         user_id: user.id,
         follow: val,
@@ -96,6 +96,16 @@ export default function useUserPostHeader(post_user_id, setPosts, post_id) {
     };
   }, []);
 
+  const handleEditPostClick = () => {
+    setIsPostDialogOpen(true);
+    setIsPostOptionListVisible(false);
+  };
+
+  const handleDeletePostClick = () => {
+    setDeletePostConfirmation(true);
+    setIsPostOptionListVisible(false);
+  };
+
   return {
     isFollowButtonDisabled,
     throttledHandleOnFollow,
@@ -110,5 +120,7 @@ export default function useUserPostHeader(post_user_id, setPosts, post_id) {
     handleDeletePost,
     isPostDialogOpen,
     setIsPostDialogOpen,
+    handleEditPostClick,
+    handleDeletePostClick,
   };
 }

@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 export const NotificationToast = () => {
   const [notification, setNotification] = useState(null);
 
-  useEffect(() => {
-    const handleNotification = (event) => {
-      setNotification(event.detail);
-      setTimeout(() => setNotification(null), 5000);
-    };
+  const handleNotification = (event) => {
+    setNotification(event.detail);
+    setTimeout(() => setNotification(null), 5000);
+  };
 
+  useEffect(() => {
     window.addEventListener("fcm-notification", handleNotification);
     return () => {
       window.removeEventListener("fcm-notification", handleNotification);

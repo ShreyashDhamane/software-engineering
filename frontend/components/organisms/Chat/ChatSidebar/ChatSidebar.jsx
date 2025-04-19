@@ -6,12 +6,10 @@ import useChatSidebar from "./useChatSidebar";
 const ChatSidebar = ({
   chatUserList,
   setSelectedUser,
-  onlineUsers,
   setChatUserList,
   setIsSidebarOpen,
-  listOfUsersTyping,
 }) => {
-  const { handleUserSelect } = useChatSidebar({
+  const { handleSidebarUserClick } = useChatSidebar({
     setSelectedUser,
     setChatUserList,
   });
@@ -33,10 +31,7 @@ const ChatSidebar = ({
             <div
               key={user.id}
               className="flex items-center gap-3 hover:cursor-pointer chatSidebarHover rounded-lg px-4"
-              onClick={() => {
-                handleUserSelect(chatUser);
-                setIsSidebarOpen(false);
-              }}
+              onClick={() => handleSidebarUserClick(chatUser)}
             >
               <div className="py-3">
                 <UserImage imageUrl={user.avatar} width={49} height={49} />

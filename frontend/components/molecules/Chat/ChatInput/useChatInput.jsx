@@ -189,6 +189,14 @@ export default function useChatInput(
     }
   };
 
+  const handleOnBlur = () => {
+    if (isTyping) {
+      clearTimeout(typingTimeoutRef.current);
+      setIsTyping(false);
+      handleUserTyping(selectedUser.chat_uuid, selectedUser.user.id, false);
+    }
+  };
+
   return {
     messageContent,
     setMessageContent,
@@ -206,5 +214,6 @@ export default function useChatInput(
     typingTimeoutRef,
     handleTypingActivity,
     handleUserTyping,
+    handleOnBlur,
   };
 }

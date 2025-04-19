@@ -23,11 +23,8 @@ const ChatInput = ({
     rows,
     emojiPickerRef,
     handleChange,
-    isTyping,
-    setIsTyping,
-    typingTimeoutRef,
     handleTypingActivity,
-    handleUserTyping,
+    handleOnBlur,
   } = useChatInput(
     selectedUser,
     setChatUserList,
@@ -73,18 +70,7 @@ const ChatInput = ({
           value={messageContent}
           onChange={handleChange} // Updated to use the new handler
           onKeyDown={handleTypingActivity} // Also track key presses
-          onBlur={() => {
-            // When textarea loses focus, immediately stop typing indication
-            if (isTyping) {
-              clearTimeout(typingTimeoutRef.current);
-              setIsTyping(false);
-              handleUserTyping(
-                selectedUser.chat_uuid,
-                selectedUser.user.id,
-                false
-              );
-            }
-          }}
+          onBlur={handleOnBlur}
         />
       </div>
       <button onClick={handleSend} disabled={!messageContent.trim()}>

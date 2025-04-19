@@ -67,34 +67,6 @@ export default function PostDialog({
     return null; // or handle the case when user is not found
   }
 
-  console.log("user in post dialog", user);
-
-  // const contentEditableRef = useRef(null);
-
-  // Handle keydown events
-
-  // Handle input changes
-  // const handleInput = (e) => {
-  //     const text = e.target.textContent;
-  //     if (postContent === "Share Your Thoughts...") {
-  //         setPostContent(text);
-  //         return;
-  //     }else{
-  //         setPostContent(text);
-  //     }
-  // };
-
-  // useEffect(() => {
-  //     if (contentEditableRef.current) {
-  //         contentEditableRef.current.textContent = postContent;
-  //     }
-  // }
-  // , [postContent]);
-  // useEffect(() => {
-  //     if (contentEditableRef.current) {
-  //         contentEditableRef.current.focus();
-  //     }
-  // }, []);
   return (
     <div className="flex justify-center items-start pt-10 fixed w-full h-full bg-black bg-opacity-50 left-0 top-0 z-50">
       <div className="w-1/2 h-4/5 bg-bg-post rounded-lg flex flex-col">
@@ -150,27 +122,6 @@ export default function PostDialog({
                 />
               </div>
             )}
-            {/* <div 
-                            className="w-full h-1 outline-none pl-7 text-xl relative text-slate-700 select-text" 
-                            contentEditable="true"
-                            ref={contentEditableRef}
-                            onInput={handleInput}
-                            suppressContentEditableWarning={true} 
-                            >
-                            {postContent === "" && "Share Your Thoughts..."}
-                            {postContent !== "" && postContent}
-                            <div>
-                            {selectedImage &&
-                                <Image
-                                    src={selectedImage}
-                                    width={500}
-                                    height={500}
-                                    alt={selectedImageName}
-                                    className="absolute w-full left-0 mt-4 select-none"
-                                />
-                                }
-                            </div>
-                        </div> */}
           </div>
 
           <div className="flex justify-between items-center mx-3 px-2 pt-3">

@@ -183,10 +183,7 @@ const Message = ({
                 width={28}
                 height={28}
                 src="/icons/close-dark.svg"
-                onClick={() => {
-                  setIsEditDialogOpen(false);
-                  console.log("Edit dialog closed");
-                }}
+                onClick={() => setIsEditDialogOpen(false)}
                 alt={"Close icon"}
               />
               <h2 className="text-white text-lg hover:cursor-default">
@@ -225,9 +222,7 @@ const Message = ({
                 isEdit={true}
                 messageId={message.id}
                 initialContent={message.content}
-                closeEditDialog={() => {
-                  setIsEditDialogOpen(false);
-                }}
+                closeEditDialog={() => setIsEditDialogOpen(false)}
               />
             </div>
           </div>
@@ -242,18 +237,14 @@ const Message = ({
               {isMessageSentWithin2Days(message.timestamp) && (
                 <button
                   className="text-forum-subheading2 px-4 py-2 rounded-full border border-gray-600 hover:text-forum-heading"
-                  onClick={() => {
-                    deleteMessage("everyone");
-                  }}
+                  onClick={() => deleteMessage("everyone")}
                 >
                   Delete for everyone
                 </button>
               )}
               <button
                 className="text-forum-subheading2 px-4 py-2 rounded-full border border-gray-600 hover:text-forum-heading"
-                onClick={() => {
-                  deleteMessage("self");
-                }}
+                onClick={() => deleteMessage("self")}
               >
                 Delete for me
               </button>

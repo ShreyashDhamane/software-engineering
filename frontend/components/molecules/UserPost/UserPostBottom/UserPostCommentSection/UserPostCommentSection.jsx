@@ -1,7 +1,6 @@
 "use client";
 import PostCommentInput from "@/components/molecules/PostCommentInput/PostCommentInput";
 import PostComments from "@/components/molecules/PostComments/PostComments";
-import useUserPostCommentSection from "@/components/molecules/UserPost/UserPostBottom/UserPostCommentSection/useUserPostCommentSection";
 
 export default function UserPostCommentSection({
   post_id,
@@ -9,7 +8,7 @@ export default function UserPostCommentSection({
   is_repost,
   original_post_id,
 }) {
-  const { comments, setComments } = useUserPostCommentSection();
+  const [comments, setComments] = useState([]);
 
   return (
     <div className="flex flex-col">
