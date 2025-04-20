@@ -1,4 +1,3 @@
-"use client";
 import Icon from "@/components/atom/Icon/Icon";
 import likeli from "@/public/icons/likeli.svg";
 import heart from "@/public/icons/heart.svg";

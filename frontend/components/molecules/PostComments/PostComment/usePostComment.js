@@ -1,6 +1,5 @@
 "use client";
-
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useNotification } from "@/app/custom-components/ToastComponent/NotificationContext";
 import { apiPost } from "@/utils/fetch/fetch";
 import reportCategories from "@/constants/reportCategories";

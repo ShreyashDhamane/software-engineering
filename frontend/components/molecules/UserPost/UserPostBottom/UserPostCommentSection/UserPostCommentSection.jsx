@@ -10,9 +10,6 @@ export default function UserPostCommentSection({
   original_post_id,
 }) {
   const [comments, setComments] = useState([]);
-  console.log("UserPostCommentSection comments", comments);
-  console.log("original_post_id", original_post_id);
-  console.log("post_id", post_id);
 
   return (
     <div className="flex flex-col">

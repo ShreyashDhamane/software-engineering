@@ -17,12 +17,10 @@ const useNotifications = () => {
         if (token) {
           // Send token to Django backend
           await registerToken(token);
-          console.log("FCM Token registered:", token);
         }
 
         // Set up foreground listener
         await setupForegroundListener((payload) => {
-          console.log("Notification received in foreground:", payload);
           let data = null;
           if (payload.data) {
             data = payload.data;

@@ -1,4 +1,3 @@
-"use client";
 import UserPostCommentSection from "@/components/molecules/UserPost/UserPostBottom/UserPostCommentSection/UserPostCommentSection";
 import useUserPostBottom from "./useUserPostBottom";
 import CustomDialogBox from "@/components/organisms/CustomDialogBox/CustomDialogBox";
@@ -25,7 +24,6 @@ export default function UserPostBottom({
     isReported,
     setIsReported,
   } = useUserPostBottom(post, setPosts);
-  console.log("UserPostBottom post", post);
 
   return (
     <div className="mx-3">

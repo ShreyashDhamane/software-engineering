@@ -1,4 +1,3 @@
-"use client";
 import { getUserFullName } from "@/utils/string";
 import UserImage from "@/components/atom/UserImage/UserImage";
 import Image from "next/image";

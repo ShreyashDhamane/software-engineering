@@ -124,7 +124,7 @@ export default function usePostCommentInput(
       setIsButtonDisabled(false); // Re-enable the button
       setIsLoading(false); // Hide loading spinner
       if (isEdit) {
-        setisInputVisible(false); // Hide the input after editing
+        setIsInputVisible(false); // Hide the input after editing
       }
     }
   };

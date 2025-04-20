@@ -1,4 +1,3 @@
-"use client";
 import Image from "next/image";
 import loaderEllipsis from "@/public/icons/loader-ellipsis.gif";
 import owlLogo from "@/public/owl-logo.svg";

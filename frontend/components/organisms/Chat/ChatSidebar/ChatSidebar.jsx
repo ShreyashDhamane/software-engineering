@@ -1,3 +1,4 @@
+"use client";
 import UserImage from "@/components/atom/UserImage/UserImage";
 import { getLastMessageTimeStamp } from "@/utils/datetime";
 import { getUserFullName } from "@/utils/string";

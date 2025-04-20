@@ -1,5 +1,3 @@
-import React from "react";
-
 const UserDataSkeleton = () => {
   return (
     <div className="w-full animate-pulse">

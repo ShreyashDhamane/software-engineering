@@ -1,3 +1,4 @@
+"use client";
 import { useRef, useState } from "react";
 import { useWebSocket } from "@/contexts/WebSocketContext";
 import { useEmojiPicker } from "@/hooks/useEmojiPicker";
@@ -59,7 +60,6 @@ export default function useChatInput(
         const data = await apiPost(`/chats/chat/message/${messageId}/`, {
           content: messageContent.trim(),
         });
-        console.log("Message edited successfully:", data);
       } catch (error) {
         console.error("Error editing message:", error);
         showError("Failed", "Failed to edit message", "edit_message_error");
@@ -106,8 +106,6 @@ export default function useChatInput(
     });
 
     try {
-      console.log(selectedUser.user);
-
       await apiPost(`/notifications/send/`, {
         user_id: selectedUser.user.id,
         title: "New message",

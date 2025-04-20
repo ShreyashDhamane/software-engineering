@@ -1,3 +1,4 @@
+"use client";
 import ChatHeader from "@/components/molecules/Chat/ChatHeader/ChatHeader";
 import ChatMessage from "@/components/molecules/Chat/ChatMessage/ChatMessage";
 import ChatInput from "@/components/molecules/Chat/ChatInput/ChatInput";
@@ -59,9 +60,6 @@ const ChatUser = ({
         {chatUserList
           .find((user) => user.user.id === selectedUser.user.id)
           .messages.map((message) => {
-            {
-              /* console.log("Rendering message:", message); */
-            }
             if (message.is_deleted == "everyone") {
               return null; // Skip rendering deleted messages for everyone
             }

@@ -1,3 +1,4 @@
+'use client";';
 import { useWebSocket } from "@/contexts/WebSocketContext";
 import { apiPost } from "@/utils/fetch/fetch";
 export default function useChatSidebar({

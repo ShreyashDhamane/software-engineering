@@ -1,5 +1,6 @@
+"use client";
 import { apiPost } from "@/utils/fetch/fetch";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 export default function useChatMessage(
   message,
@@ -29,12 +30,8 @@ export default function useChatMessage(
 
   const handleCopy = async () => {
     try {
-      console.log(message);
-
       await navigator.clipboard.writeText(message.content);
     } catch (error) {
-      console.log("Error copying message:", error);
-
       showError("Failed", "Failed to copy message", "copy_message_error");
     }
   };
@@ -42,10 +39,7 @@ export default function useChatMessage(
   const handleDelete = async () => {
     try {
       setIsDeleteDialogOpen(true);
-      console.log("Deleting message:", message.id);
     } catch (error) {
-      console.log("Error deleting message:", error);
-
       showError("Failed", "Failed to delete message", "delete_message_error");
     } finally {
       // setIsDeleteDialogOpen(false);

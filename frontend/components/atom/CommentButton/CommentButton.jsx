@@ -1,4 +1,3 @@
-"use client";
 export default function CommentButton({ children, theme = "blue", ...props }) {
   // Define button styles based on the theme
   const buttonStyles = {
