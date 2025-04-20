@@ -25,6 +25,8 @@ export default function UserPostBottom({
     isReported,
     setIsReported,
   } = useUserPostBottom(post, setPosts);
+  console.log("UserPostBottom post", post);
+
   return (
     <div className="mx-3">
       <CustomDialogBox

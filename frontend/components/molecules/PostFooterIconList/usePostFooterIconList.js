@@ -4,7 +4,11 @@ import { useNotification } from "@/app/custom-components/ToastComponent/Notifica
 import { apiPost } from "@/utils/fetch/fetch";
 import { useState } from "react";
 
-export default function usePostFooterIconList(post, setPosts) {
+export default function usePostFooterIconList(
+  post,
+  setPosts,
+  setShowReportUserDialog
+) {
   const [userHasLiked, setUserHasLiked] = useState(post.user_has_liked);
   const [likeType, setLikeType] = useState(post.like_type);
   const { showError, showWarning, showSuccess } = useNotification();

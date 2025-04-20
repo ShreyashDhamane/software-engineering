@@ -5,7 +5,7 @@ import Image from "next/image";
 import { fallbackUserProfileImage } from "@/constants/imageUrls";
 import UserDataSkeleton from "./UserDataSkeleton";
 import UserInfoSkeleton from "./UserInfoSkeleton";
-
+import topography from "@/public/topography.svg";
 export default function UserData({
   isLoading,
   user,
@@ -18,7 +18,7 @@ export default function UserData({
       <div className="relative  rounded-lg max-h-[210px] pb-4 w-full bg-bg-post">
         <div className="h-[58px] absolute left-0 top-0 w-full bg-purple-300 rounded-t-lg">
           <Image
-            src={"/topography.svg"}
+            src={topography}
             alt="Community Image"
             width={225}
             height={230}

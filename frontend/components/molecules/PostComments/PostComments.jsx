@@ -20,11 +20,11 @@ export default function PostComments({
       post_id,
       comments,
       setComments,
-      setCommentsCount,
       is_repost,
       original_post_id,
       is_reply,
-      parent_comment_id
+      parent_comment_id,
+      setCommentsCount
     );
 
   useEffect(() => {

@@ -6,7 +6,9 @@ import useUserPostHeader from "@/components/molecules/UserPost/UserPostHeader/us
 import Icon from "@/components/atom/Icon/Icon";
 import CustomDialogBox from "@/components/organisms/CustomDialogBox/CustomDialogBox";
 import PostDialog from "@/components/organisms/PostDialog/PostDialog";
-
+import pencil from "@/public/icons/pencil.png";
+import deleteIcon from "@/public/icons/delete.png";
+import moreOptions from "@/public/icons/more-options.svg";
 export default function UserPostHeader({
   user_avatar,
   user_fullname,
@@ -75,7 +77,7 @@ export default function UserPostHeader({
               onClick={handleEditPostClick}
             >
               <Icon
-                src={"/icons/pencil.png"}
+                src={pencil}
                 size={"md"}
                 width={13}
                 height={13}
@@ -89,7 +91,7 @@ export default function UserPostHeader({
               onClick={handleDeletePostClick}
             >
               <Icon
-                src={"/icons/delete.png"}
+                src={deleteIcon}
                 size={"md"}
                 width={13}
                 height={13}
@@ -140,7 +142,7 @@ export default function UserPostHeader({
           {user_id === post_user_id && (
             <div className="absolute top-0 right-0 rounded-full hover:cursor-pointer hover:bg-gray-100">
               <Icon
-                src={"/icons/more-options.svg"}
+                src={moreOptions}
                 size={"md"}
                 width={30}
                 height={30}

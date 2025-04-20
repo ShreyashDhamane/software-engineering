@@ -1,16 +1,23 @@
 "use client";
 import { useState } from "react";
+import likeli from "@/public/icons/likeli.svg";
+import clap from "@/public/icons/clap.svg";
+import support from "@/public/icons/support.svg";
+import heart from "@/public/icons/heart.svg";
+import bulb from "@/public/icons/bulb.svg";
+import laugh from "@/public/icons/laugh.svg";
+
 const useLikeOptionList = () => {
   const [hoveredIcon, setHoveredIcon] = useState(null); // Track which icon is hovered
 
   // Icons data
   const icons = [
-    { src: "/icons/likeli.svg", alt: "Like" },
-    { src: "/icons/clap.svg", alt: "Clap" },
-    { src: "/icons/support.svg", alt: "Support" },
-    { src: "/icons/heart.svg", alt: "Heart" },
-    { src: "/icons/bulb.svg", alt: "Bulb" },
-    { src: "/icons/laugh.svg", alt: "Laugh" },
+    { src: likeli, alt: "Like" },
+    { src: clap, alt: "Clap" },
+    { src: support, alt: "Support" },
+    { src: heart, alt: "Heart" },
+    { src: bulb, alt: "Bulb" },
+    { src: laugh, alt: "Laugh" },
   ];
 
   return {

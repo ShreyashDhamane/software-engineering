@@ -1,6 +1,6 @@
 "use client";
 import Icon from "@/components/atom/Icon/Icon";
-
+import closeIcon from "@/public/icons/close.svg";
 export default function ReportDialog({
   reportCategories,
   reportCategorySelectedIndex,
@@ -26,7 +26,7 @@ export default function ReportDialog({
           <h2 className="text-2xl font-medium">Report this comment</h2>
           <div className="hover:bg-gray-200 p-2 rounded-full">
             <Icon
-              src={"/icons/close.svg"}
+              src={closeIcon}
               size={"sm"}
               width={35}
               height={35}

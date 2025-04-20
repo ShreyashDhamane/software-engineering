@@ -2,7 +2,8 @@
 import EmojiPicker from "emoji-picker-react";
 import Image from "next/image";
 import useChatInput from "./useChatInput";
-
+import send3 from "@/public/icons/send3.svg";
+import emojiWhite from "@/public/icons/emoji-white.svg";
 const ChatInput = ({
   selectedUser,
   setChatUserList,
@@ -49,7 +50,7 @@ const ChatInput = ({
         )}
         <button onClick={handleClickOnEmojiPicker} className="pl-2">
           <Image
-            src={"/icons/emoji-white.svg"}
+            src={emojiWhite}
             width={20}
             height={20}
             alt="Image Picker"
@@ -75,7 +76,7 @@ const ChatInput = ({
       </div>
       <button onClick={handleSend} disabled={!messageContent.trim()}>
         <Image
-          src="/icons/send3.svg"
+          src={send3}
           alt="Send"
           width={24}
           height={24}

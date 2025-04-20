@@ -4,7 +4,7 @@ import CustomTextInput from "@/components/atom/CustomTextInput/CustomeTextInput"
 import Icon from "@/components/atom/Icon/Icon";
 import usePostCommentInput from "@/components/molecules/PostCommentInput/usePostCommentInput";
 import EmojiPicker from "emoji-picker-react";
-
+import emoji from "@/public/icons/emoji.svg";
 export default function PostCommentInput({
   post_id,
   setCommentsCount,
@@ -72,7 +72,7 @@ export default function PostCommentInput({
       <div className="flex justify-between">
         <Icon
           onClick={handleClickOnEmojiPicker}
-          src={"/icons/emoji.svg"}
+          src={emoji}
           width={20}
           height={20}
           alt="Image Picker"

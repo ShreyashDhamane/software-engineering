@@ -3,7 +3,7 @@ import ChatMessage from "@/components/molecules/Chat/ChatMessage/ChatMessage";
 import ChatInput from "@/components/molecules/Chat/ChatInput/ChatInput";
 import { ChevronLeft } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-
+import topography from "@/public/images/topography.svg";
 const ChatUser = ({
   selectedUser,
   setChatUserList,
@@ -50,7 +50,8 @@ const ChatUser = ({
       <div
         className="flex-1 overflow-y-auto scrollbar-hide"
         style={{
-          backgroundImage: 'url("/images/topography.svg")',
+          // backgroundImage: 'url("/images/topography.svg")',
+          backgroundImage: `url(${topography.src})`,
           backgroundSize: "cover",
         }}
         ref={messagesContainerRef}

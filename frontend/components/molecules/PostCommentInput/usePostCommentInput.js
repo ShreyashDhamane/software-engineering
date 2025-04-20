@@ -3,6 +3,8 @@ import { useEmojiPicker } from "@/hooks/useEmojiPicker";
 import { useState } from "react";
 import { apiPost } from "@/utils/fetch/fetch";
 import { useNotification } from "@/app/custom-components/ToastComponent/NotificationContext";
+
+const maxCommentLength = 400; // Maximum comment length
 export default function usePostCommentInput(
   post_id,
   setCommentsCount,
@@ -36,9 +38,9 @@ export default function usePostCommentInput(
       return;
     }
 
-    if (commentContent.length > 400) {
+    if (commentContent.length > maxCommentLength) {
       showError(
-        "Comment content exceeds the character limit of 400 characters."
+        `Comment is too long. Maximum length is ${maxCommentLength} characters.`
       );
       return;
     }

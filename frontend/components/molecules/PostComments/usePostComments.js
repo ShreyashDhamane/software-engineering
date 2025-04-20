@@ -25,6 +25,18 @@ export default function usePostComments(
         showError("Please login to view comments. User not found.");
         return;
       }
+      console.log("Fetching comments for post:", post_id, "Page:", page);
+      console.log("is_repost:", is_repost);
+      console.log("original_post_id:", original_post_id);
+      console.log("is_reply:", is_reply);
+
+      console.log(
+        `/forum/posts/${
+          is_repost ? original_post_id : post_id
+        }/comments/?user_id=${user.id}&parent_comment_id=${
+          is_reply ? parent_comment_id : 0
+        }&page=${page}&limit=5`
+      );
 
       const response = await apiGet(
         `/forum/posts/${

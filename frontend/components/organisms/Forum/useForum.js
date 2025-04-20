@@ -1,8 +1,7 @@
 "use client";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback } from "react";
 import { apiGet } from "@/utils/fetch/fetch";
 import { useNotification } from "@/app/custom-components/ToastComponent/NotificationContext";
-import userHeadings from "@/constants/headers";
 
 export default function useForum(settingsType) {
   const [isOpen, setIsOpen] = useState(false);

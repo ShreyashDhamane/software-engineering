@@ -7,6 +7,7 @@ import { deleteDark, editDark, ellipsisDark, reportDark } from "@/public/icons";
 export default function PostCommentOptionList({
   isCommentOptionListVisible,
   setIsCommentOptionListVisible,
+  setShowReportCategoryDialog,
   dropdownRef,
   parentComment,
   setComments,
@@ -25,7 +26,8 @@ export default function PostCommentOptionList({
     parentComment.id,
     setComments,
     setCommentsCount,
-    setIsCommentOptionListVisible
+    setIsCommentOptionListVisible,
+    setShowReportCategoryDialog
   );
   let user = JSON.parse(localStorage.getItem("user"));
 

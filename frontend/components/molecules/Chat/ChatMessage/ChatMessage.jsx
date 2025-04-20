@@ -11,7 +11,10 @@ import { useNotification } from "@/app/custom-components/ToastComponent/Notifica
 import { useEffect, useLayoutEffect } from "react";
 import Icon from "@/components/atom/Icon/Icon";
 import ChatInput from "../ChatInput/ChatInput";
-
+import closeDark from "@/public/icons/close-dark.svg";
+import messageSeen from "@/public/icons/message_seen.svg";
+import messageUnseen from "@/public/icons/message_unseen.svg";
+import downArrow from "@/public/icons/down-arrow.svg";
 const Message = ({
   message,
   openSettingsId,
@@ -182,7 +185,7 @@ const Message = ({
               <Icon
                 width={28}
                 height={28}
-                src="/icons/close-dark.svg"
+                src={closeDark}
                 onClick={() => setIsEditDialogOpen(false)}
                 alt={"Close icon"}
               />
@@ -201,11 +204,7 @@ const Message = ({
                   </p>
                   {message.sender_id == currentUserId && (
                     <Image
-                      src={
-                        message.read
-                          ? "/icons/message_seen.svg"
-                          : "/icons/message_unseen.svg"
-                      }
+                      src={message.read ? messageSeen : messageUnseen}
                       width={23}
                       height={23}
                       alt="Message status"
@@ -270,7 +269,7 @@ const Message = ({
               onClick={handleSettingsClick}
             >
               <Image
-                src={"/icons/down-arrow.svg"}
+                src={downArrow}
                 alt="arrow"
                 height={24}
                 width={24}
@@ -304,11 +303,7 @@ const Message = ({
             </p>
             {message.sender_id == currentUserId && (
               <Image
-                src={
-                  message.read
-                    ? "/icons/message_seen.svg"
-                    : "/icons/message_unseen.svg"
-                }
+                src={message.read ? messageSeen : messageUnseen}
                 width={23}
                 height={23}
                 alt="Message status"

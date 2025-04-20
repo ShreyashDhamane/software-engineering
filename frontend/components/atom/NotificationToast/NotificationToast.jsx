@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-
+const notificationTimeout = 5000; // 5 seconds
 export const NotificationToast = () => {
   const [notification, setNotification] = useState(null);
 
   const handleNotification = (event) => {
     setNotification(event.detail);
-    setTimeout(() => setNotification(null), 5000);
+    setTimeout(() => setNotification(null), notificationTimeout);
   };
 
   useEffect(() => {

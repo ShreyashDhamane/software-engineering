@@ -8,6 +8,7 @@ import { useEffect } from "react";
 const PostFooterIconList = ({
   handleClickOnComment,
   setLikesCount,
+  setShowReportUserDialog,
   setPosts,
   post,
   isReported,
@@ -20,7 +21,7 @@ const PostFooterIconList = ({
     setLikeType,
     handleRepost,
     handleReportPostClick,
-  } = usePostFooterIconList(post, setPosts);
+  } = usePostFooterIconList(post, setPosts, setShowReportUserDialog);
 
   useEffect(() => {
     setIsReported(post.is_reported);
