@@ -1,7 +1,8 @@
 import Image from "next/image";
 import loaderEllipsis from "@/public/icons/loader-ellipsis.gif";
 import owlLogo from "@/public/owl-logo.svg";
-export default function Loader({ size = "w-4 h-4", color = "text-gray-500" }) {
+
+export default function Loader() {
   return (
     <div className="flex flex-col justify-center items-center py-10">
       <Image src={owlLogo} width={40} height={40} alt={"Loading..."} />

@@ -4,7 +4,6 @@ import Link from "next/link";
 import SettingPanel from "@/app/custom-components/SettingPanel";
 import { useUser } from "@/components/Auth/UserContextProvider";
 import { apiPost, authAPI } from "@/utils/fetch/fetch";
-import EnableNotifications from "@/components/atom/EnableNotification/EnableNotification";
 import {
   Card,
   CardHeader,
@@ -96,7 +95,6 @@ export default function Dashboard() {
           </Card>
         </div>
       </div>
-      {/* <EnableNotifications /> */}
     </div>
   );
 }

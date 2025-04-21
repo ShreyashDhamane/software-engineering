@@ -32,7 +32,7 @@ const PostFooterIconList = ({
       <div className="flex-1 group ">
         {/* like option list */}
         <LikeIconTextWithTooltip
-          iconData={iconsData[0]}
+          iconData={iconsData.like}
           post_id={post.id}
           userHasLiked={userHasLiked}
           setUserHasLiked={setUserHasLiked}
@@ -48,29 +48,29 @@ const PostFooterIconList = ({
         onClick={handleClickOnComment}
       >
         <IconText
-          src={iconsData[1].src}
-          width={iconsData[1].width}
-          height={iconsData[1].height}
-          alt={iconsData[1].alt}
-          text={iconsData[1].text}
+          src={iconsData.comment.src}
+          width={iconsData.comment.width}
+          height={iconsData.comment.height}
+          alt={iconsData.comment.alt}
+          text={iconsData.comment.text}
         />
       </div>
       <div className="flex-1" onClick={handleRepost}>
         <IconText
-          src={iconsData[2].src}
-          width={iconsData[2].width}
-          height={iconsData[2].height}
-          alt={iconsData[2].alt}
-          text={iconsData[2].text}
+          src={iconsData.repost.src}
+          width={iconsData.repost.width}
+          height={iconsData.repost.height}
+          alt={iconsData.repost.alt}
+          text={iconsData.repost.text}
         />
       </div>
       <div className="flex-1" onClick={handleReportPostClick}>
         <IconText
-          src={iconsData[3].src}
-          width={iconsData[3].width}
-          height={iconsData[3].height}
-          alt={iconsData[3].alt}
-          text={isReported ? "Reported" : iconsData[3].text}
+          src={iconsData.report.src}
+          width={iconsData.report.width}
+          height={iconsData.report.height}
+          alt={iconsData.report.alt}
+          text={isReported ? "Reported" : iconsData.report.text}
           theme={isReported ? "red" : null}
         />
       </div>

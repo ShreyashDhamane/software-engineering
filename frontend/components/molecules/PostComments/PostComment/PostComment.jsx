@@ -1,5 +1,4 @@
 "use client";
-import Icon from "@/components/atom/Icon/Icon";
 import { getUserFullName } from "@/utils/string";
 import usePostComment from "@/components/molecules/PostComments/PostComment/usePostComment";
 import PostCommentInput from "@/components/molecules/PostCommentInput/PostCommentInput";
@@ -10,6 +9,9 @@ import PostCommentUserImage from "./PostCommentUserImage/PostCommentUserImage";
 import PostCommentUserBody from "./PostCommentUserBody/PostCommentUserBody";
 import PostCommentOptionList from "./PostCommentOptionList/PostCommentOptionList";
 import { useEffect } from "react";
+import cn from "@/utils/cn";
+
+const COMMENT_NESTING_LEVEL = 3; // Maximum nesting level for comments
 
 export default function PostComment({
   parentComment,
@@ -139,7 +141,12 @@ export default function PostComment({
           setIsEditCommentVisible={setIsEditCommentVisible}
         />
       </div>
-      <div className={`ml-${level >= 3 ? 0 : 8} mt-2`}>
+      <div
+        className={cn(`mt-2`, {
+          "ml-0": level >= COMMENT_NESTING_LEVEL,
+          "ml-8": level < COMMENT_NESTING_LEVEL,
+        })}
+      >
         {showCommentReplyInput && (
           <PostCommentInput
             post_id={post_id}

@@ -1,6 +1,7 @@
 "use client";
 import Icon from "@/components/atom/Icon/Icon";
 import useLikeOptionList from "./useLikeOptionList";
+import { cn } from "@/lib/utils";
 
 export default function LikeOptionList({ onClick }) {
   const { hoveredIcon, setHoveredIcon, icons } = useLikeOptionList();
@@ -27,9 +28,13 @@ export default function LikeOptionList({ onClick }) {
 
   return (
     <div
-      className={`flex bg-bg-post rounded-full justify-center items-center ${
-        hoveredIcon != null ? "max-h-12" : "max-h-14"
-      } `}
+      className={cn(
+        "flex bg-bg-post rounded-full justify-center items-center",
+        {
+          "max-h-12": hoveredIcon != null,
+          "max-h-14": hoveredIcon == null,
+        }
+      )}
     >
       {icons.map((icon, index) => (
         <Icon

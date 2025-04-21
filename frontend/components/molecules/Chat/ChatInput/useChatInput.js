@@ -16,7 +16,7 @@ export default function useChatInput(
   const [rows, setRows] = useState(1);
   const [messageContent, setMessageContent] = useState(initialContent || "");
   const textareaRef = useRef(null);
-  const { send, connectionStatus, handleUserTyping } = useWebSocket();
+  const { send, handleUserTyping } = useWebSocket();
   const [isTyping, setIsTyping] = useState(false);
   const typingTimeoutRef = useRef(null);
   const { showError } = useNotification();
@@ -57,7 +57,7 @@ export default function useChatInput(
           });
         });
         closeEditDialog(); // Close the edit dialog after sending
-        const data = await apiPost(`/chats/chat/message/${messageId}/`, {
+        await apiPost(`/chats/chat/message/${messageId}/`, {
           content: messageContent.trim(),
         });
       } catch (error) {

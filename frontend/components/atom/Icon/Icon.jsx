@@ -1,4 +1,5 @@
 "use client";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -13,41 +14,42 @@ export default function Icon({
   onMouseLeave = null,
   selected = null,
   tooltipText = "",
+  className = "",
 }) {
   const [isHovered, setIsHovered] = useState(false); // State to manage hover
-  let data =
+  let baseClassName =
     "flex justify-center items-center rounded-full hover:cursor-pointer transition-all duration-200 inline-block";
 
   if (selected == null) {
-    data = "hover:bg-bg-forum " + data;
+    baseClassName = "hover:bg-bg-forum " + baseClassName;
     if (size === "sm") {
-      data = "w-5 h-5 " + data;
+      baseClassName = "w-5 h-5 " + baseClassName;
     } else if (size === "md") {
-      data = "w-7 h-7 " + data;
+      baseClassName = "w-7 h-7 " + baseClassName;
     } else if (size === "lg") {
-      data = "w-10 h-10 " + data;
+      baseClassName = "w-10 h-10 " + baseClassName;
     } else if (size === "xl") {
-      data = "w-14 h-14 " + data;
+      baseClassName = "w-14 h-14 " + baseClassName;
     } else if (size === "xl") {
-      data = "w-18 h-18 " + data;
+      baseClassName = "w-18 h-18 " + baseClassName;
     }
   } else {
     if (selected) {
       // Only apply large size if no size is explicitly set
       if (!size) {
-        data = "scale-110 z-3 w-20 h-20 " + data;
+        baseClassName = "scale-110 z-3 w-20 h-20 " + baseClassName;
       } else {
         // use size-specific selected styles
         if (size === "md") {
-          data = "scale-110 z-3 w-8 h-8 " + data;
+          baseClassName = "scale-110 z-3 w-8 h-8 " + baseClassName;
         } else if (size === "sm") {
-          data = "scale-110 z-3 w-6 h-6 " + data;
+          baseClassName = "scale-110 z-3 w-6 h-6 " + baseClassName;
         } else {
-          data = "scale-110 z-3 w-10 h-10 " + data;
+          baseClassName = "scale-110 z-3 w-10 h-10 " + baseClassName;
         }
       }
     } else {
-      data = "w-8 h-8 " + data;
+      baseClassName = "w-8 h-8 " + baseClassName;
     }
   }
 
@@ -72,7 +74,7 @@ export default function Icon({
   return (
     <div
       onClick={handleClick} // Use our safe handler instead of directly passing onClick
-      className={`${data} relative`} // tooltiptext positioned relative to icon
+      className={cn(baseClassName, "relative", className)} // tooltiptext positioned relative to icon
       onMouseEnter={() => {}}
       onMouseLeave={handleOnMouseEnter}
     >

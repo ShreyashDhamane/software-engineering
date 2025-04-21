@@ -5,6 +5,7 @@ import { fallbackUserProfileImage } from "@/constants/imageUrls";
 import UserDataSkeleton from "./UserDataSkeleton";
 import UserInfoSkeleton from "./UserInfoSkeleton";
 import topography from "@/public/topography.svg";
+import { useEffect, useState } from "react";
 export default function UserData({
   isLoading,
   user,
@@ -12,6 +13,28 @@ export default function UserData({
   isUserDataCardLoading,
   userSideCardData,
 }) {
+  const [userInfo, setUserInfo] = useState([]);
+  useEffect(() => {
+    if (!userSideCardData) return;
+    setUserInfo([
+      {
+        title: "Saved Routes",
+        value: userSideCardData.total_saved_routes,
+      },
+      {
+        title: "Total Posts",
+        value: userSideCardData.total_posts,
+      },
+      {
+        title: "Followers",
+        value: userSideCardData.total_followers,
+      },
+      {
+        title: "Karma",
+        value: userSideCardData.user_karma,
+      },
+    ]);
+  }, [userSideCardData]);
   return (
     <div className="text-text-forum-heading w-full">
       <div className="relative  rounded-lg max-h-[210px] pb-4 w-full bg-bg-post">
@@ -41,13 +64,8 @@ export default function UserData({
                   height={70}
                 />
               </div>
-              <h3 className="text-xl font-semibold text-forum-heading">
-                {getUserFullName(user?.first_name, user?.last_name).length > 14
-                  ? getUserFullName(
-                      user?.first_name,
-                      user?.last_name
-                    ).substring(0, 14) + ".."
-                  : getUserFullName(user?.first_name, user?.last_name)}
+              <h3 className="text-xl font-semibold text-forum-heading truncate">
+                {getUserFullName(user?.first_name, user?.last_name)}
               </h3>
               <p className="text-xs font-medium pt-1 text-forum-subheading">
                 {userHeading}
@@ -64,22 +82,12 @@ export default function UserData({
           <UserInfoSkeleton />
         ) : (
           <>
-            <div className="flex justify-between mt-1">
-              <p>Saved Routes</p>
-              <p>{userSideCardData.total_saved_routes}</p>
-            </div>
-            <div className="flex justify-between mt-1">
-              <p>Total Posts</p>
-              <p>{userSideCardData.total_posts}</p>
-            </div>
-            <div className="flex justify-between mt-1">
-              <p>Followers</p>
-              <p>{userSideCardData.total_followers}</p>
-            </div>
-            <div className="flex justify-between mt-1">
-              <p>Karma</p>
-              <p>{userSideCardData.user_karma}</p>
-            </div>
+            {userInfo.map((info, index) => (
+              <div className="flex justify-between mt-1">
+                <p>{info.title}</p>
+                <p>{info.value}</p>
+              </div>
+            ))}
           </>
         )}
       </div>
