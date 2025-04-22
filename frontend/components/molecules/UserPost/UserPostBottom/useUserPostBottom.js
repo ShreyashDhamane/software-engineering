@@ -2,7 +2,7 @@
 
 import { useNotification } from "@/app/custom-components/ToastComponent/NotificationContext";
 import { apiPost } from "@/utils/fetch/fetch";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 export default function useUserPostBottom(post, setPosts) {
   const [showCommentSection, setShowCommentSection] = useState(false);
@@ -109,26 +109,6 @@ export default function useUserPostBottom(post, setPosts) {
       setDisableYesButton(false);
     }
   };
-
-  // Function to close the dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        handleShowReportUserDialogRef.current &&
-        !handleShowReportUserDialogRef.current.contains(event.target)
-      ) {
-        setShowReportUserDialog(false);
-      }
-    };
-
-    // Add event listener when the component mounts
-    document.addEventListener("mousedown", handleClickOutside);
-
-    // Clean up the event listener when the component unmounts
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   return {
     getCommentsCount,

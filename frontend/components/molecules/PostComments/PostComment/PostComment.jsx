@@ -10,6 +10,7 @@ import PostCommentUserBody from "./PostCommentUserBody/PostCommentUserBody";
 import PostCommentOptionList from "./PostCommentOptionList/PostCommentOptionList";
 import { useEffect } from "react";
 import cn from "@/utils/cn";
+import useClickOutside from "@/hooks/useClickOutside";
 
 const COMMENT_NESTING_LEVEL = 3; // Maximum nesting level for comments
 
@@ -51,8 +52,6 @@ export default function PostComment({
     isEditCommentVisible,
     setIsEditCommentVisible,
     hoverTimeoutRef2,
-    handleClickOutsideComment,
-    handleClickOutsideReportDialog,
   } = usePostComment(parentComment, post_id, original_post_id, is_repost);
 
   // Cleanup the timeout when the component unmounts
@@ -64,26 +63,12 @@ export default function PostComment({
     };
   }, []);
 
-  // Function to close the dropdown when clicking outside
-  useEffect(() => {
-    // Add event listener when the component mounts
-    document.addEventListener("mousedown", handleClickOutsideComment);
-
-    // Clean up the event listener when the component unmounts
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutsideComment);
-    };
-  }, []);
-
-  useEffect(() => {
-    // Add event listener when the component mounts
-    document.addEventListener("mousedown", handleClickOutsideReportDialog);
-
-    // Clean up the event listener when the component unmounts
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutsideReportDialog);
-    };
-  }, []);
+  useClickOutside(dropdownRef, () => setIsCommentOptionListVisible(false), []);
+  useClickOutside(
+    reportCategoryDialogRef,
+    () => setShowReportCategoryDialog(false),
+    []
+  );
 
   const userFullName = getUserFullName(
     parentComment?.user?.first_name || "Unknown",

@@ -80,22 +80,6 @@ export default function useUserPostHeader(post_user_id, setPosts, post_id) {
     }
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        postOptionListRef.current &&
-        !postOptionListRef.current.contains(event.target)
-      ) {
-        setIsPostOptionListVisible(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
   const handleEditPostClick = () => {
     setIsPostDialogOpen(true);
     setIsPostOptionListVisible(false);

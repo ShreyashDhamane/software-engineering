@@ -19,11 +19,7 @@ export default function useChatMessage(
   const isSettingsOpen = openSettingsId === message.id;
 
   const handleClickOutside = (e) => {
-    if (
-      isSettingsOpen &&
-      settingsRef.current &&
-      !settingsRef.current.contains(e.target)
-    ) {
+    if (isSettingsOpen) {
       setOpenSettingsId(null);
     }
   };

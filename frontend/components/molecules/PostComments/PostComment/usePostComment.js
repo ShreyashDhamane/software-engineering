@@ -175,20 +175,6 @@ export default function usePostComment(
     }
   };
 
-  const handleClickOutsideComment = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsCommentOptionListVisible(false); // Close the dropdown
-    }
-  };
-  const handleClickOutsideReportDialog = (event) => {
-    if (
-      reportCategoryDialogRef.current &&
-      !reportCategoryDialogRef.current.contains(event.target)
-    ) {
-      setShowReportCategoryDialog(false); // Close the dialog
-    }
-  };
-
   return {
     isTooltipVisible,
     handleMouseEnter,
@@ -217,8 +203,6 @@ export default function usePostComment(
     isReportedCommentLoading,
     isEditCommentVisible,
     setIsEditCommentVisible,
-    handleClickOutsideComment,
-    handleClickOutsideReportDialog,
     hoverTimeoutRef2,
   };
 }

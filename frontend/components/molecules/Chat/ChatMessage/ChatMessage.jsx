@@ -15,6 +15,7 @@ import closeDark from "@/public/icons/close-dark.svg";
 import messageSeen from "@/public/icons/message_seen.svg";
 import messageUnseen from "@/public/icons/message_unseen.svg";
 import downArrow from "@/public/icons/down-arrow.svg";
+import useClickOutside from "@/hooks/useClickOutside";
 const Message = ({
   message,
   openSettingsId,
@@ -51,6 +52,8 @@ const Message = ({
     messagesContainerRef
   );
 
+  useClickOutside(settingsRef, handleClickOutside, []);
+
   useEffect(() => {
     // Only access localStorage after component mounts (client-side)
     const user =
@@ -59,14 +62,6 @@ const Message = ({
         : null;
     setCurrentUserId(user?.id || null);
   }, []);
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isSettingsOpen, setOpenSettingsId, settingsRef]);
 
   useLayoutEffect(() => {
     if (

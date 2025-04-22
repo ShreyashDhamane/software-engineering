@@ -130,15 +130,6 @@ export const usePostDialog = (
     }
   };
 
-  const handleClickOutside = (event) => {
-    if (
-      postDialogRef.current &&
-      !postDialogRef.current.contains(event.target)
-    ) {
-      onClick(); // Close the dialog
-    }
-  };
-
   return {
     handleSubmit,
     postContent,
@@ -146,6 +137,5 @@ export const usePostDialog = (
     isButtonDisabled,
     isLoading,
     postDialogRef,
-    handleClickOutside,
   };
 };

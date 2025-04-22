@@ -9,6 +9,7 @@ import PostDialog from "@/components/organisms/PostDialog/PostDialog";
 import pencil from "@/public/icons/pencil.png";
 import deleteIcon from "@/public/icons/delete.png";
 import moreOptions from "@/public/icons/more-options.svg";
+import useClickOutside from "@/hooks/useClickOutside";
 export default function UserPostHeader({
   user_avatar,
   user_fullname,
@@ -39,6 +40,13 @@ export default function UserPostHeader({
     handleEditPostClick,
     handleDeletePostClick,
   } = useUserPostHeader(post_user_id, setPosts, post_id);
+
+  useClickOutside(
+    postOptionListRef,
+    () => setIsPostOptionListVisible(false),
+    []
+  );
+
   return (
     <div className="flex flex-row px-4 pt-3">
       {

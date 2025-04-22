@@ -2,6 +2,7 @@ import UserPostCommentSection from "@/components/molecules/UserPost/UserPostBott
 import useUserPostBottom from "./useUserPostBottom";
 import CustomDialogBox from "@/components/organisms/CustomDialogBox/CustomDialogBox";
 import UserPostButtons from "./UserPostButtons/UserPostButtons";
+import useClickOutside from "@/hooks/useClickOutside";
 
 export default function UserPostBottom({
   likesCount,
@@ -24,6 +25,12 @@ export default function UserPostBottom({
     isReported,
     setIsReported,
   } = useUserPostBottom(post, setPosts);
+
+  useClickOutside(
+    handleShowReportUserDialogRef,
+    () => setShowReportUserDialog(false),
+    []
+  );
 
   return (
     <div className="mx-3">
