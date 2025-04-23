@@ -5,6 +5,11 @@ import { useEmojiPicker } from "@/hooks/useEmojiPicker";
 import { useNotification } from "@/app/custom-components/ToastComponent/NotificationContext";
 import { apiPost } from "@/utils/fetch/fetch";
 
+const MAX_MESSAGE_LENGTH = 500; // Maximum message length
+const DEFAULT_ROWS = 1; // Default number of rows for the textarea
+const MAX_ROWS = 3; // Maximum number of rows for the textarea
+const USER_TYPING_TIMEOUT = 1000; // Timeout for user typing detection (in milliseconds)
+
 export default function useChatInput(
   selectedUser,
   setChatUserList,
@@ -30,40 +35,7 @@ export default function useChatInput(
   const senderId = user.id; // Assuming you have the sender's ID from local storage
   const handleSend = async () => {
     if (isEdit) {
-      if (initialContent.trim() === messageContent.trim()) {
-        closeEditDialog(); // Close edit dialog if content is unchanged
-        return;
-      }
-      try {
-        // If editing, send the edit message request
-        setChatUserList((prev) => {
-          return prev.map((chat) => {
-            if (chat.user.id == selectedUser.user.id) {
-              return {
-                ...chat,
-                messages: chat.messages.map((msg) => {
-                  if (msg.id === messageId) {
-                    return {
-                      ...msg,
-                      content: messageContent.trim(),
-                      is_deleted: "no", // Reset deletion status on edit
-                    };
-                  }
-                  return msg;
-                }),
-              };
-            }
-            return chat;
-          });
-        });
-        closeEditDialog(); // Close the edit dialog after sending
-        await apiPost(`/chats/chat/message/${messageId}/`, {
-          content: messageContent.trim(),
-        });
-      } catch (error) {
-        console.error("Error editing message:", error);
-        showError("Failed", "Failed to edit message", "edit_message_error");
-      }
+      handleEditMessage();
       return;
     }
     if (!messageContent.trim()) return;
@@ -81,8 +53,59 @@ export default function useChatInput(
 
     // Send via WebSocket
     send(chatMessage);
-
+    //send notification to the user
+    sendMessageNotification(selectedUser.user.id, selectedUser.user.first_name);
     //also add the message to the chat user list
+    sendMessageLocalUpdatesAndCleanup(
+      selectedUser,
+      message_id,
+      senderId,
+      chatMessage
+    );
+  };
+
+  const handleEditMessage = async () => {
+    if (initialContent.trim() === messageContent.trim()) {
+      closeEditDialog(); // Close edit dialog if content is unchanged
+      return;
+    }
+    try {
+      // If editing, send the edit message request
+      setChatUserList((prev) => {
+        return prev.map((chat) => {
+          if (chat.user.id == selectedUser.user.id) {
+            return {
+              ...chat,
+              messages: chat.messages.map((msg) => {
+                if (msg.id === messageId) {
+                  return {
+                    ...msg,
+                    content: messageContent.trim(),
+                    is_deleted: "no", // Reset deletion status on edit
+                  };
+                }
+                return msg;
+              }),
+            };
+          }
+          return chat;
+        });
+      });
+      closeEditDialog(); // Close the edit dialog after sending
+      await apiPost(`/chats/chat/message/${messageId}/`, {
+        content: messageContent.trim(),
+      });
+    } catch (error) {
+      console.error("Error editing message:", error);
+      showError("Failed", "Failed to edit message", "edit_message_error");
+    }
+  };
+
+  const sendMessageLocalUpdatesAndCleanup = (
+    message_id,
+    senderId,
+    chatMessage
+  ) => {
     setChatUserList((prev) => {
       return prev.map((chat) => {
         if (chat.user.id == selectedUser.user.id) {
@@ -105,11 +128,21 @@ export default function useChatInput(
       });
     });
 
+    setMessageContent("");
+    handleInput(); // Reset textarea height after sending
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto"; // or your initial height
+      setRows(DEFAULT_ROWS);
+    }
+  };
+
+  const sendMessageNotification = async (user_id, first_name) => {
     try {
       await apiPost(`/notifications/send/`, {
-        user_id: selectedUser.user.id,
+        user_id: user_id,
         title: "New message",
-        body: "You have a new message from " + selectedUser.user.first_name,
+        body: "You have a new message from " + first_name,
       });
     } catch (error) {
       console.error("Error sending notification:", error);
@@ -118,14 +151,6 @@ export default function useChatInput(
         "Failed to send notification",
         "send_notification_error"
       );
-    }
-
-    setMessageContent("");
-    handleInput(); // Reset textarea height after sending
-    const textarea = textareaRef.current;
-    if (textarea) {
-      textarea.style.height = "auto"; // or your initial height
-      setRows(1);
     }
   };
 
@@ -140,8 +165,8 @@ export default function useChatInput(
     const newRows = Math.min(3, Math.floor(scrollHeight / lineHeight));
     setRows(newRows);
 
-    if (newRows === 3) {
-      textarea.style.height = `${lineHeight * 3}px`;
+    if (newRows === MAX_ROWS) {
+      textarea.style.height = `${lineHeight * MAX_ROWS}px`;
     } else {
       textarea.style.height = `${scrollHeight}px`;
     }
@@ -163,12 +188,12 @@ export default function useChatInput(
     typingTimeoutRef.current = setTimeout(() => {
       setIsTyping(false);
       handleUserTyping(selectedUser.chat_uuid, selectedUser.user.id, false);
-    }, 1000); // Adjust this delay as needed (1000ms = 1 second)
+    }, USER_TYPING_TIMEOUT); // Adjust this delay as needed (1000ms = 1 second)
   };
 
   const handleChange = (e) => {
-    if (e.target.value.length > 500) {
-      showError("Message content exceeds 500 characters limit.");
+    if (e.target.value.length > MAX_MESSAGE_LENGTH) {
+      showError(`Message content exceeds ${MAX_MESSAGE_LENGTH} characters`);
       return;
     }
     setMessageContent(e.target.value);
@@ -182,7 +207,7 @@ export default function useChatInput(
       const textarea = textareaRef.current;
       if (textarea) {
         textarea.style.height = "auto"; // or your initial height
-        setRows(1);
+        setRows(DEFAULT_ROWS);
       }
     }
   };

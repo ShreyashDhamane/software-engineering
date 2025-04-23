@@ -15,6 +15,12 @@ export default function IconText({
   like_type = null,
   theme = null,
 }) {
+  const likeTypeColor = getLikeTypeColor(user_has_liked, like_type, theme);
+  const groupHoverTextColor = getGroupHoverTextColor(
+    user_has_liked,
+    like_type,
+    theme
+  );
   return (
     <div
       className="flex flex-1 p-2 my-3 mx-1 space-x-1 justify-center items-center rounded-md h-[35px] relative md:flex-col lg:flex-row  hover:bg-black hover:cursor-pointer "
@@ -28,15 +34,11 @@ export default function IconText({
         className="object-fill "
       />
       <p
-        className={`hidden md:block ${getLikeTypeColor(
-          user_has_liked,
-          like_type,
-          theme
-        )} text-sm font-semibold group-hover:${getGroupHoverTextColor(
-          user_has_liked,
-          like_type,
-          theme
-        )} `}
+        className={
+          (`hidden md:block text-sm font-semibold`,
+          likeTypeColor,
+          `group-hover:${groupHoverTextColor}`)
+        }
       >
         {user_has_liked ? like_type : text}
       </p>

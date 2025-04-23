@@ -3,6 +3,8 @@ import { useNotification } from "@/app/custom-components/ToastComponent/Notifica
 import { apiPost } from "@/utils/fetch/fetch";
 import { useState, useEffect, useRef } from "react";
 
+const likeTypes = ["Like", "Clap", "Support", "Heart", "Bulb", "Laugh"];
+
 export default function useLikeIconTextWithTooltip(
   post_id,
   userHasLiked,
@@ -33,41 +35,68 @@ export default function useLikeIconTextWithTooltip(
     }, 100);
   };
 
-  const throttledHandleOnLike = async (like_type) => {
+  const getUser = () => {
+    let userString = null;
+    if (typeof window !== "undefined") {
+      userString = localStorage.getItem("user"); // Retrieve the string
+    }
+
+    let user = null;
+    if (userString) {
+      try {
+        user = JSON.parse(userString); // Parse the string into a JSON object
+      } catch (e) {
+        console.error("Failed to parse user data:", e);
+        showError("Invalid user data. Please log in again.");
+        return;
+      }
+    } else {
+      showError("Please login to like the post. User not found.");
+      console.error("No user data found in localStorage");
+      return;
+    }
+
+    if (!user || !user.id) {
+      showError("Please login to like the post. User not found.");
+      return;
+    }
+
+    return user;
+  };
+
+  const handleOnLikeValidation = (like_type) => {
     // Ensure like_type is a string, not a DOM element or event
     if (typeof like_type !== "string") {
-      console.error("Invalid like_type:", like_type);
       showError("Invalid like type");
-      return;
+      return false;
     }
 
     // Check if the button is disabled
     if (isDisabled) {
       showError("Please wait before liking again.");
-      return;
+      return false;
     }
+
+    return true;
+  };
+
+  const throttledHandleOnLike = async (like_type) => {
+    // Ensure like_type is a string, not a DOM element or event
+    if (handleOnLikeValidation(like_type) === false) return;
 
     // Disable the button for 2 seconds
     setIsDisabled(true);
-
     let userHasLiked2 = null; // Moved outside try block
 
     try {
-      if (
-        !userHasLiked &&
-        ["Like", "Clap", "Support", "Heart", "Bulb", "Laugh"].includes(
-          like_type
-        )
-      ) {
+      if (!userHasLiked && likeTypes.includes(like_type)) {
         setLikesCount((prevCount) => prevCount + 1);
         setUserHasLiked(true);
         userHasLiked2 = true;
         setLikeType(like_type);
       } else if (
         userHasLiked &&
-        ["Like", "Clap", "Support", "Heart", "Bulb", "Laugh"].includes(
-          like_type
-        ) &&
+        likeTypes.includes(like_type) &&
         likeType !== like_type
       ) {
         setLikeType(like_type);
@@ -80,55 +109,7 @@ export default function useLikeIconTextWithTooltip(
 
       setTooltipVisible(false);
 
-      let userString = null;
-      if (typeof window !== "undefined") {
-        userString = localStorage.getItem("user"); // Retrieve the string
-      }
-
-      let user = null;
-      if (userString) {
-        try {
-          user = JSON.parse(userString); // Parse the string into a JSON object
-        } catch (e) {
-          console.error("Failed to parse user data:", e);
-          showError("Invalid user data. Please log in again.");
-          return;
-        }
-      } else {
-        showError("Please login to like the post. User not found.");
-        console.error("No user data found in localStorage");
-        return;
-      }
-
-      if (!user || !user.id) {
-        showError("Please login to like the post. User not found.");
-        return;
-      }
-
-      // Ensure we're only sending primitive values
-      const postIdToUse = is_repost ? original_post_id : post_id;
-
-      // Create a simple payload with only primitive values
-      const payload = {
-        post_id: String(postIdToUse), // Ensure it's a string
-        is_liked: Boolean(userHasLiked2), // Ensure it's a boolean
-        user_id: String(user.id), // Ensure it's a string
-        like_type: String(like_type), // Ensure it's a string
-      };
-
-      const response = await apiPost(
-        `/forum/posts/${postIdToUse}/like/`,
-        payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.status !== 201) {
-        throw new Error(response.message || "Failed to like the post");
-      }
+      await handleOnLikeServer(userHasLiked2, like_type);
     } catch (error) {
       showError("Error: Check console for details.");
       console.error("Error liking the post:", error);
@@ -145,6 +126,36 @@ export default function useLikeIconTextWithTooltip(
       setTimeout(() => {
         setIsDisabled(false);
       }, 2000);
+    }
+  };
+
+  const handleOnLikeServer = async (userHasLiked2, like_type) => {
+    const user = getUser();
+    if (!user) return;
+
+    // Ensure we're only sending primitive values
+    const postIdToUse = is_repost ? original_post_id : post_id;
+
+    // Create a simple payload with only primitive values
+    const payload = {
+      post_id: String(postIdToUse), // Ensure it's a string
+      is_liked: Boolean(userHasLiked2), // Ensure it's a boolean
+      user_id: String(user.id), // Ensure it's a string
+      like_type: String(like_type), // Ensure it's a string
+    };
+
+    const response = await apiPost(
+      `/forum/posts/${postIdToUse}/like/`,
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.status !== 201) {
+      throw new Error(response.message || "Failed to like the post");
     }
   };
 

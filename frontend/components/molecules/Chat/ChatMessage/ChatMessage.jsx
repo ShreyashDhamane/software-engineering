@@ -1,5 +1,4 @@
 "use client"; // Ensures this only runs on client-side
-import clsx from "clsx";
 import {
   getLastMessageTimeStampAMPM,
   isMessageSentWithin15Mins,
@@ -16,6 +15,7 @@ import messageSeen from "@/public/icons/message_seen.svg";
 import messageUnseen from "@/public/icons/message_unseen.svg";
 import downArrow from "@/public/icons/down-arrow.svg";
 import useClickOutside from "@/hooks/useClickOutside";
+import { cn } from "@/lib/utils";
 const Message = ({
   message,
   openSettingsId,
@@ -76,7 +76,7 @@ const Message = ({
     };
   }, [isSettingsOpen]);
 
-  const settingsClasses = clsx("absolute z-10 chatBackgroundDark w-40", {
+  const settingsClasses = cn("absolute z-10 chatBackgroundDark w-40", {
     "top-6": settingsDivDirection === "left-bottom",
     "bottom-6": settingsDivDirection === "left-top",
     "left-6 bottom-2": settingsDivDirection === "right-top",

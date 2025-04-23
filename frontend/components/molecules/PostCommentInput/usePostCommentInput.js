@@ -30,39 +30,91 @@ export default function usePostCommentInput(
   const [isLoading, setIsLoading] = useState(false); // Loading state for visual feedback
   const { showError, showSuccess } = useNotification();
 
-  const handleCommentSubmit = async () => {
-    // Input validation
-
+  const handleCommentSubmitValidation = () => {
     if (commentContent.trim() === "") {
       showError("Please enter a comment, cannot be empty.");
-      return;
+      return false;
     }
 
     if (commentContent.length > maxCommentLength) {
       showError(
         `Comment is too long. Maximum length is ${maxCommentLength} characters.`
       );
+      return false;
+    }
+    return true;
+  };
+
+  const getUser = () => {
+    let userString = null;
+    if (typeof window !== "undefined") {
+      userString = localStorage.getItem("user"); // Retrieve the user from localStorage
+    }
+    let user = null;
+    if (userString) {
+      user = JSON.parse(userString); // Parse the user object
+    } else {
+      showError("Please login to comment. User not found.");
+    }
+
+    if (!user) {
+      showError("Please login to comment. User not found.");
       return;
     }
+
+    return user;
+  };
+
+  const handleCommentSubmitSuccess = (response, user) => {
+    showSuccess(`Comment ${isEdit ? "edited" : "submitted"} successfully`);
+
+    //type of setRepliesCount check
+
+    const newComment = {
+      content: commentContent,
+      date_created: new Date().toISOString(),
+      id: isEdit ? parent_comment_id : response.id,
+      post_id: post_id,
+      is_reply: is_reply,
+      parent_comment_id: parent_comment_id,
+      user: {
+        avatar_url: user?.avatar ? user.avatar : null,
+        email: user?.email || "Unknown",
+        first_name: user?.first_name || "Unknown",
+        id: user?.id || 0,
+        last_name: user?.last_name || "Unknown",
+      },
+    };
+
+    if (!isEdit) {
+      setComments((prev) => [newComment, ...prev]);
+      setCommentsCount((prev) => prev + 1);
+    } else {
+      setComments((prev) =>
+        prev.map((comment) =>
+          comment.id === parent_comment_id
+            ? { ...comment, content: commentContent }
+            : comment
+        )
+      );
+    }
+
+    setCommentContent("");
+    if (is_reply && typeof setRepliesCount === "function") {
+      setRepliesCount((prev) => prev + 1); // Increment the replies count if it's a reply
+    }
+  };
+
+  const handleCommentSubmit = async () => {
+    // Input validation
+    if (!handleCommentSubmitValidation()) return;
 
     try {
       setIsButtonDisabled(true); // Disable the button
       setIsLoading(true); // Show loading spinner
-      let userString = null;
-      if (typeof window !== "undefined") {
-        userString = localStorage.getItem("user"); // Retrieve the user from localStorage
-      }
-      let user = null;
-      if (userString) {
-        user = JSON.parse(userString); // Parse the user object
-      } else {
-        showError("Please login to comment. User not found.");
-      }
 
-      if (!user) {
-        showError("Please login to comment. User not found.");
-        return;
-      }
+      const user = getUser();
+      if (!user) return; // Ensure user is valid
 
       // Make the API call
       const response = await apiPost(
@@ -79,44 +131,7 @@ export default function usePostCommentInput(
           },
         }
       );
-
-      //type of setRepliesCount check
-
-      const newComment = {
-        content: commentContent,
-        date_created: new Date().toISOString(),
-        id: isEdit ? parent_comment_id : response.id,
-        post_id: post_id,
-        is_reply: is_reply,
-        parent_comment_id: parent_comment_id,
-        user: {
-          avatar_url: user?.avatar ? user.avatar : null,
-          email: user?.email || "Unknown",
-          first_name: user?.first_name || "Unknown",
-          id: user?.id || 0,
-          last_name: user?.last_name || "Unknown",
-        },
-      };
-      showSuccess(`Comment ${isEdit ? "edited" : "submitted"} successfully`);
-      // Reset the comment input
-      if (!isEdit) setCommentsCount((prev) => prev + 1); // Increment the comments count
-
-      if (!isEdit) {
-        setComments((prev) => [newComment, ...prev]);
-      } else {
-        setComments((prev) =>
-          prev.map((comment) =>
-            comment.id === parent_comment_id
-              ? { ...comment, content: commentContent }
-              : comment
-          )
-        );
-      }
-
-      setCommentContent("");
-      if (is_reply && typeof setRepliesCount === "function") {
-        setRepliesCount((prev) => prev + 1); // Increment the replies count if it's a reply
-      }
+      handleCommentSubmitSuccess(response, user); // Handle success response
     } catch (error) {
       console.log("Error submitting comment:", error);
       showError("Failed to submit comment. Please try again.");

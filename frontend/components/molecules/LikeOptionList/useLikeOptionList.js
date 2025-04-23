@@ -7,7 +7,7 @@ import heart from "@/public/icons/heart.svg";
 import bulb from "@/public/icons/bulb.svg";
 import laugh from "@/public/icons/laugh.svg";
 
-const useLikeOptionList = () => {
+const useLikeOptionList = (onClick) => {
   const [hoveredIcon, setHoveredIcon] = useState(null); // Track which icon is hovered
 
   // Icons data
@@ -20,10 +20,26 @@ const useLikeOptionList = () => {
     { src: laugh, alt: "Laugh" },
   ];
 
+  const handleIconClick = (likeType) => {
+    if (
+      likeType &&
+      typeof likeType === "object" &&
+      likeType._reactName === "onClick"
+    ) {
+      console.warn("Received event object instead of like type string");
+      return;
+    }
+
+    if (typeof likeType === "string") {
+      onClick(likeType);
+    }
+  };
+
   return {
     hoveredIcon,
     setHoveredIcon,
     icons,
+    handleIconClick, // Use our safe handler
   };
 };
 

@@ -4,27 +4,10 @@ import useLikeOptionList from "./useLikeOptionList";
 import { cn } from "@/lib/utils";
 
 export default function LikeOptionList({ onClick }) {
-  const { hoveredIcon, setHoveredIcon, icons } = useLikeOptionList();
+  const { hoveredIcon, setHoveredIcon, icons, handleIconClick } =
+    useLikeOptionList(onClick);
 
   // Create a handler that ensures we pass the correct like type
-  const handleIconClick = (likeType) => {
-    // If likeType is an event object (e.g., SyntheticBaseEvent),
-    // extract the alt text from the clicked element
-    if (
-      likeType &&
-      typeof likeType === "object" &&
-      likeType._reactName === "onClick"
-    ) {
-      // This is a backup measure in case the Icon component passes the event
-      console.warn("Received event object instead of like type string");
-      return;
-    }
-
-    // Otherwise, assume likeType is already a string (from our fixed Icon component)
-    if (typeof likeType === "string") {
-      onClick(likeType);
-    }
-  };
 
   return (
     <div
