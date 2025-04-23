@@ -1,6 +1,7 @@
 "use client";
 import { useNotification } from "@/app/custom-components/ToastComponent/NotificationContext";
 import { apiGet } from "@/utils/fetch/fetch";
+import { produce } from "immer";
 import { useState } from "react";
 
 export default function usePostComments(
@@ -42,8 +43,17 @@ export default function usePostComments(
 
       // If it's the first page, replace the comments
       // Otherwise, append the new comments to the existing list
-      setComments((prevComments) =>
-        page === 1 ? response.comments : [...prevComments, ...response.comments]
+
+      setComments(
+        produce((draft) => {
+          if (page === 1) {
+            draft = response.comments;
+          } else {
+            draft.push(...response.comments);
+          }
+
+          return draft;
+        })
       );
 
       // Update hasMore based on the response

@@ -4,6 +4,7 @@ import {
   getIconSource,
   getGroupHoverTextColor,
 } from "@/utils/icons";
+import cn from "@/utils/cn";
 export default function IconText({
   src,
   width,
@@ -34,11 +35,11 @@ export default function IconText({
         className="object-fill "
       />
       <p
-        className={
-          (`hidden md:block text-sm font-semibold`,
+        className={cn(
+          `hidden md:block text-sm font-semibold`,
           likeTypeColor,
-          `group-hover:${groupHoverTextColor}`)
-        }
+          `group-hover:${groupHoverTextColor}`
+        )}
       >
         {user_has_liked ? like_type : text}
       </p>

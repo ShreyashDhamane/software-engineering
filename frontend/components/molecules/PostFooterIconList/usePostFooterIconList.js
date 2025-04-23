@@ -2,6 +2,7 @@
 
 import { useNotification } from "@/app/custom-components/ToastComponent/NotificationContext";
 import { apiPost } from "@/utils/fetch/fetch";
+import { produce } from "immer";
 import { useState } from "react";
 
 export default function usePostFooterIconList(
@@ -62,14 +63,15 @@ export default function usePostFooterIconList(
           avatar_url: user?.avatar ? user.avatar : null,
         },
       };
-      setPosts((prevPosts) => {
-        //add new repost at start, but remove the old one iwth same id
-        //first filter out the old repost
-        const newPosts = prevPosts.filter((p) => p.id !== post.id);
-        //add new repost at start
-        newPosts.unshift(newRepost);
-        return newPosts;
-      });
+
+      setPosts(
+        produce((draft) => {
+          const newPosts = draft.filter((p) => p.id !== post.id);
+          //add new repost at start
+          newPosts.unshift(newRepost);
+          return newPosts;
+        })
+      );
 
       // Scroll to the top of the page
       window.scrollTo({ top: 0, behavior: "smooth" });

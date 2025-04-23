@@ -3,7 +3,7 @@ import UserImage from "@/components/atom/UserImage/UserImage";
 import { getLastMessageTimeStamp } from "@/utils/datetime";
 import { getUserFullName } from "@/utils/string";
 import useChatSidebar from "./useChatSidebar";
-
+import ToolTip from "@/components/atom/ToolTip/ToolTip";
 const ChatSidebar = ({
   chatUserList,
   setSelectedUser,
@@ -15,6 +15,13 @@ const ChatSidebar = ({
     setChatUserList,
     setIsSidebarOpen,
   });
+
+  const messageContentSidebar = (chatUser) =>
+    chatUser.messages.length > 0
+      ? chatUser.messages[chatUser.messages.length - 1].is_deleted == "no"
+        ? chatUser.messages[chatUser.messages.length - 1].content
+        : "message deleted"
+      : "Start conversation";
 
   return (
     <section className="w-full h-full flex flex-col borderLightR">
@@ -28,7 +35,7 @@ const ChatSidebar = ({
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         {chatUserList.map((chatUser) => {
           const user = chatUser.user;
-
+          const finalSidebarMessage = messageContentSidebar(chatUser);
           return (
             <div
               key={user.id}
@@ -53,26 +60,13 @@ const ChatSidebar = ({
                     </p>
                   )}
                 </div>
-                <div className="relative truncate">
-                  {chatUser.messages.length > 0 ? (
-                    <p className="text-forum-subheading2 text-sm">
-                      {chatUser.messages[chatUser.messages.length - 1]
-                        .is_deleted == "no" &&
-                        (chatUser.messages[chatUser.messages.length - 1].content
-                          .length > 20
-                          ? chatUser.messages[
-                              chatUser.messages.length - 1
-                            ].content.slice(0, 30) + "..."
-                          : chatUser.messages[chatUser.messages.length - 1]
-                              .content)}
-                      {chatUser.messages[chatUser.messages.length - 1]
-                        .is_deleted != "no" && "message deleted"}
+                <div className="relative group">
+                  <ToolTip content={finalSidebarMessage}>
+                    <p className="text-forum-subheading2 text-sm truncate">
+                      {finalSidebarMessage}
                     </p>
-                  ) : (
-                    <p className="text-forum-subheading2 text-sm">
-                      Start conversation
-                    </p>
-                  )}
+                  </ToolTip>
+
                   {chatUser.unread_count > 0 && (
                     <div className="absolute size-6 chatBackground rounded-full -bottom-1 right-0 flex items-center justify-center">
                       <p className="text-xs text-forum-heading text-center">

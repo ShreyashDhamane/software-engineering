@@ -1,6 +1,5 @@
 import UserImage from "@/components/atom/UserImage/UserImage";
 import { getUserFullName } from "@/utils/string";
-
 const ChatHeader = ({ selectedUser, onlineUsers, listOfUsersTyping }) => {
   const user = selectedUser.user;
   const isUserOnline = onlineUsers.some(

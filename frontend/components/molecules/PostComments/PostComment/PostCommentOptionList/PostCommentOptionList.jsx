@@ -12,6 +12,7 @@ export default function PostCommentOptionList({
   parentComment,
   setComments,
   setCommentsCount,
+  setIsEditCommentVisible,
 }) {
   const {
     showDeleteCommentDialog,
@@ -27,7 +28,8 @@ export default function PostCommentOptionList({
     setComments,
     setCommentsCount,
     setIsCommentOptionListVisible,
-    setShowReportCategoryDialog
+    setShowReportCategoryDialog,
+    setIsEditCommentVisible
   );
   let user = JSON.parse(localStorage.getItem("user"));
 
@@ -54,6 +56,7 @@ export default function PostCommentOptionList({
           setIsCommentOptionListVisible(!isCommentOptionListVisible)
         }
         data-testid="icon-..."
+        className="pt-1 pl-1"
       />
 
       {isCommentOptionListVisible && (
@@ -65,7 +68,7 @@ export default function PostCommentOptionList({
           <ul>
             {parentComment?.user?.id !== user.id && (
               <li
-                className="hover:bg-forum-primary flex gap-2 pl-4 pr-5 py-1 hover:cursor-pointer justify-start items-center"
+                className="hover:bg-bg-forum flex gap-2 pl-4 pr-5 py-1 hover:cursor-pointer justify-start items-center"
                 onClick={handleReportCommentClick}
                 data-testid="report-option"
               >
@@ -83,7 +86,7 @@ export default function PostCommentOptionList({
 
             {parentComment?.user?.id === user.id && (
               <li
-                className="hover:bg-gray-100 flex gap-2 pl-4 pr-5 py-1 hover:cursor-pointer justify-start items-center"
+                className="hover:bg-bg-forum flex gap-2 pl-4 pr-5 py-1 hover:cursor-pointer justify-start items-center"
                 onClick={handleEditCommentClick}
                 data-testid="edit-option"
               >
@@ -101,7 +104,7 @@ export default function PostCommentOptionList({
 
             {parentComment?.user?.id === user.id && (
               <li
-                className="hover:bg-gray-100 flex gap-2 pl-4 pr-5 py-1 hover:cursor-pointer justify-start items-center"
+                className="hover:bg-bg-forum flex gap-2 pl-4 pr-5 py-1 hover:cursor-pointer justify-start items-center"
                 onClick={handleDeleteCommentClick}
                 data-testid="delete-option"
               >

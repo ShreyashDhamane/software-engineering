@@ -9,7 +9,8 @@ export default function usePostCommentOptionList(
   setComments,
   setCommentsCount,
   setIsCommentOptionListVisible,
-  setShowReportCategoryDialog
+  setShowReportCategoryDialog,
+  setIsEditCommentVisible
 ) {
   const [showDeleteCommentDialog, setShowDeleteCommentDialog] = useState(false);
   const [disableButtons, setDisableButtons] = useState(false);

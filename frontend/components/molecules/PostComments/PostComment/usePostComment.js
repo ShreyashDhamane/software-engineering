@@ -3,6 +3,9 @@ import { useRef, useState } from "react";
 import { useNotification } from "@/app/custom-components/ToastComponent/NotificationContext";
 import { apiPost } from "@/utils/fetch/fetch";
 import reportCategories from "@/constants/reportCategories";
+
+const likeTypes = ["Like", "Clap", "Support", "Heart", "Bulb", "Laugh"];
+
 export default function usePostComment(
   comment,
   post_id,
@@ -60,21 +63,14 @@ export default function usePostComment(
       setIsDisabled(true);
       // return;
       let userHasLiked2 = null;
-      if (
-        !userHasLiked &&
-        ["Like", "Clap", "Support", "Heart", "Bulb", "Laugh"].includes(
-          like_type
-        )
-      ) {
+      if (!userHasLiked && likeTypes.includes(like_type)) {
         setLikesCount((prevCount) => prevCount + 1);
         setUserHasLiked(true);
         userHasLiked2 = true;
         setLikeType(like_type);
       } else if (
         userHasLiked &&
-        ["Like", "Clap", "Support", "Heart", "Bulb", "Laugh"].includes(
-          like_type
-        ) &&
+        likeTypes.includes(like_type) &&
         likeType !== like_type
       ) {
         setLikeType(like_type);

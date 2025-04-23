@@ -6,6 +6,8 @@ import UserDataSkeleton from "./UserDataSkeleton";
 import UserInfoSkeleton from "./UserInfoSkeleton";
 import topography from "@/public/topography.svg";
 import { useEffect, useState } from "react";
+import ToolTip from "@/components/atom/ToolTip/ToolTip";
+
 export default function UserData({
   isLoading,
   user,
@@ -64,9 +66,13 @@ export default function UserData({
                   height={70}
                 />
               </div>
-              <h3 className="text-xl font-semibold text-forum-heading truncate">
-                {getUserFullName(user?.first_name, user?.last_name)}
-              </h3>
+              <ToolTip
+                content={getUserFullName(user?.first_name, user?.last_name)}
+              >
+                <h3 className="text-xl font-semibold text-forum-heading truncate">
+                  {getUserFullName(user?.first_name, user?.last_name)}
+                </h3>
+              </ToolTip>
               <p className="text-xs font-medium pt-1 text-forum-subheading">
                 {userHeading}
               </p>

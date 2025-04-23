@@ -3,6 +3,7 @@ import { useEmojiPicker } from "@/hooks/useEmojiPicker";
 import { useState } from "react";
 import { apiPost } from "@/utils/fetch/fetch";
 import { useNotification } from "@/app/custom-components/ToastComponent/NotificationContext";
+import { produce } from "immer";
 
 const maxCommentLength = 400; // Maximum comment length
 export default function usePostCommentInput(
@@ -87,15 +88,22 @@ export default function usePostCommentInput(
     };
 
     if (!isEdit) {
-      setComments((prev) => [newComment, ...prev]);
+      setComments(
+        produce((draft) => {
+          draft.unshift(newComment); // Add the new comment to the beginning of the array
+        })
+      );
       setCommentsCount((prev) => prev + 1);
     } else {
-      setComments((prev) =>
-        prev.map((comment) =>
-          comment.id === parent_comment_id
-            ? { ...comment, content: commentContent }
-            : comment
-        )
+      setComments(
+        produce((draft) => {
+          const comment = draft.find(
+            (comment) => comment.id === parent_comment_id
+          );
+          if (comment) {
+            comment.content = commentContent; // Update the content of the found comment
+          }
+        })
       );
     }
 

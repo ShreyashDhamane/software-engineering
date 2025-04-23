@@ -1,6 +1,7 @@
 'use client";';
 import { useWebSocket } from "@/contexts/WebSocketContext";
 import { apiPost } from "@/utils/fetch/fetch";
+import { produce } from "immer";
 export default function useChatSidebar({
   setSelectedUser,
   setChatUserList,
@@ -17,20 +18,20 @@ export default function useChatSidebar({
       await apiPost(`/chats/${chat.chat_uuid}/read/${chat.user.id}/`);
 
       //update the chat user list to set unread count to 0 for the selected user
-      setChatUserList((prev) => {
-        return prev.map((chatUser) => {
-          if (chatUser.user.id == chat.user.id) {
-            return {
-              ...chatUser,
-              unread_count: 0,
-              messages: chatUser.messages.map((message) => {
-                return { ...message, read: true };
-              }),
-            };
+      setChatUserList(
+        produce((draft) => {
+          const chatUser = draft.find(
+            (chatUser) => chatUser.user.id === chat.user.id
+          );
+          if (chatUser) {
+            chatUser.unread_count = 0;
+            chatUser.messages.forEach((message) => {
+              message.read = true;
+            });
           }
-          return chatUser;
-        });
-      });
+          return draft;
+        })
+      );
 
       handleUserSelection(chat.chat_uuid, chat.user.id);
     } catch (error) {

@@ -4,6 +4,7 @@ import { useWebSocket } from "@/contexts/WebSocketContext";
 import { useEmojiPicker } from "@/hooks/useEmojiPicker";
 import { useNotification } from "@/app/custom-components/ToastComponent/NotificationContext";
 import { apiPost } from "@/utils/fetch/fetch";
+import { produce } from "immer";
 
 const MAX_MESSAGE_LENGTH = 500; // Maximum message length
 const DEFAULT_ROWS = 1; // Default number of rows for the textarea
@@ -56,12 +57,7 @@ export default function useChatInput(
     //send notification to the user
     sendMessageNotification(selectedUser.user.id, selectedUser.user.first_name);
     //also add the message to the chat user list
-    sendMessageLocalUpdatesAndCleanup(
-      selectedUser,
-      message_id,
-      senderId,
-      chatMessage
-    );
+    sendMessageLocalUpdatesAndCleanup(message_id, senderId, chatMessage);
   };
 
   const handleEditMessage = async () => {
@@ -70,27 +66,20 @@ export default function useChatInput(
       return;
     }
     try {
-      // If editing, send the edit message request
-      setChatUserList((prev) => {
-        return prev.map((chat) => {
-          if (chat.user.id == selectedUser.user.id) {
-            return {
-              ...chat,
-              messages: chat.messages.map((msg) => {
-                if (msg.id === messageId) {
-                  return {
-                    ...msg,
-                    content: messageContent.trim(),
-                    is_deleted: "no", // Reset deletion status on edit
-                  };
-                }
-                return msg;
-              }),
-            };
+      setChatUserList(
+        produce((draft) => {
+          const chat = draft.find(
+            (chat) => chat.user.id === selectedUser.user.id
+          );
+          if (chat) {
+            const message = chat.messages.find((msg) => msg.id === messageId);
+            if (message) {
+              message.content = messageContent.trim();
+              message.is_deleted = "no"; // Reset deletion status on edit
+            }
           }
-          return chat;
-        });
-      });
+        })
+      );
       closeEditDialog(); // Close the edit dialog after sending
       await apiPost(`/chats/chat/message/${messageId}/`, {
         content: messageContent.trim(),
@@ -106,27 +95,21 @@ export default function useChatInput(
     senderId,
     chatMessage
   ) => {
-    setChatUserList((prev) => {
-      return prev.map((chat) => {
-        if (chat.user.id == selectedUser.user.id) {
-          return {
-            ...chat,
-            messages: [
-              ...chat.messages,
-              {
-                id: message_id,
-                sender_id: senderId,
-                content: chatMessage.content,
-                timestamp: chatMessage.timestamp,
-                read: false,
-                is_deleted: "no", // Default to "no" for new messages
-              },
-            ],
-          };
+    setChatUserList(
+      produce((draft) => {
+        const chat = draft.find((ch) => ch.user.id === selectedUser.user.id);
+        if (chat) {
+          chat.messages.push({
+            id: message_id,
+            sender_id: senderId,
+            content: chatMessage.content,
+            timestamp: chatMessage.timestamp,
+            read: false,
+            is_deleted: "no", // Default to "no" for new messages
+          });
         }
-        return chat;
-      });
-    });
+      })
+    );
 
     setMessageContent("");
     handleInput(); // Reset textarea height after sending

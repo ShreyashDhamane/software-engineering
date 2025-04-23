@@ -2,6 +2,7 @@
 import { useNotification } from "@/app/custom-components/ToastComponent/NotificationContext";
 import { apiDelete, apiPost } from "@/utils/fetch/fetch";
 import throttle from "@/utils/throttle";
+import { produce } from "immer";
 import { useEffect, useRef, useState } from "react";
 
 export default function useUserPostHeader(post_user_id, setPosts, post_id) {
@@ -40,14 +41,16 @@ export default function useUserPostHeader(post_user_id, setPosts, post_id) {
       }
 
       setIsFollowButtonDisabled(true);
-      setPosts((prev) => {
-        return prev.map((post) => {
-          if (post.user_id === post_user_id) {
-            return { ...post, is_following_author: val };
+
+      setPosts(
+        produce((draft) => {
+          const post = draft.find((p) => p.user_id === post_user_id);
+          if (post) {
+            post.is_following_author = val;
           }
-          return post;
-        });
-      });
+          return draft;
+        })
+      );
 
       await apiPost(`/forum/posts/follow/${post_user_id}/`, {
         user_id: user.id,

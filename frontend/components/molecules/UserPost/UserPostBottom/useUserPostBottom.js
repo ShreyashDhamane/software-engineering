@@ -57,33 +57,46 @@ export default function useUserPostBottom(post, setPosts) {
     setShowCommentSection(true);
   };
 
+  const getUser = () => {
+    let user = null;
+    if (typeof window !== "undefined") {
+      user = JSON.parse(localStorage.getItem("user"));
+    }
+    if (!user) {
+      showError("Please login to report a post. User not found.");
+      return;
+    }
+    return user;
+  };
+
+  const handleReportValidator = (user) => {
+    if (post.is_reported) {
+      showError("Post is already reported by you.");
+      return false;
+    }
+
+    if (user.id === post.user_id) {
+      //show toast
+      showError("You can't report your own post");
+      return false;
+    }
+    if (post.is_repost && user.id === post.reposted_by.id) {
+      //show toast
+      showError("You can't report your own repost");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleReportPost = async () => {
     try {
       if (disableYesButton) return; // Prevent multiple clicks if button is already disabled
       setDisableYesButton(true);
-      if (post.is_reported) {
-        showError("Post is already reported by you.");
-        return;
-      }
-      let user = null;
-      if (typeof window !== "undefined") {
-        user = JSON.parse(localStorage.getItem("user"));
-      }
-      if (!user) {
-        showError("Please login to report a post. User not found.");
-        return;
-      }
-      if (user.id === post.user_id) {
-        //show toast
-        showError("You can't report your own post");
-        return;
-      }
-      if (post.is_repost && user.id === post.reposted_by.id) {
-        //show toast
-        showError("You can't report your own repost");
-        return;
-      }
 
+      let user = getUser();
+      if (!user) return;
+      if (handleReportValidator(user) === false) return; // Validate the report action
       await apiPost(
         `/forum/posts/${
           post.is_repost ? post.original_post_id : post.id
