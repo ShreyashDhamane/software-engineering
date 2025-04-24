@@ -34,10 +34,8 @@ export default function useForum(settingsType) {
       const response = await apiGet(
         `/forum/posts?user_id=${user?.id}&offset=0&limit=${limit}&settings_type=${settingsType}`
       );
-      if (response) {
-        setUserPosts(response.posts);
-        setHasMore(response.has_more); // Update hasMore based on the response
-      }
+      setUserPosts(response?.posts || []); // Set initial posts
+      setHasMore(response?.has_more || false); // Update hasMore based on the response
     } catch (error) {
       showSuccess("Trending posts.");
       console.error("Error fetching posts, it works though:", error);
