@@ -14,6 +14,7 @@ export default function LikeIconTextWithTooltip({
   is_repost,
   original_post_id,
   showIcon = true,
+  className = "",
 }) {
   const {
     isTooltipVisible,

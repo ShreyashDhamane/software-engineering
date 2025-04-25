@@ -9,11 +9,13 @@ const ChatSidebar = ({
   setSelectedUser,
   setChatUserList,
   setIsSidebarOpen,
+  selectedUser,
 }) => {
   const { handleSidebarUserClick } = useChatSidebar({
     setSelectedUser,
     setChatUserList,
     setIsSidebarOpen,
+    selectedUser,
   });
 
   const messageContentSidebar = (chatUser) =>

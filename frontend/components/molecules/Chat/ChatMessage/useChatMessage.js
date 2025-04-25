@@ -15,6 +15,7 @@ export default function useChatMessage(
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [settingsDivDirection, setSettingsDivDirection] =
     useState("left-bottom");
+  const [isDisabled, setIsDisabled] = useState(false); // State to track if the button is disabled
   const settingsRef = useRef(null);
   const isSettingsOpen = openSettingsId === message.id;
 
@@ -87,6 +88,7 @@ export default function useChatMessage(
 
   const deleteMessage = async (type) => {
     try {
+      setIsDisabled(true); // Disable the button to prevent multiple clicks
       await apiPost(`/chats/chat/${message.id}/delete/`, {
         delete_type: type,
       });
@@ -107,8 +109,11 @@ export default function useChatMessage(
         });
       });
     } catch {
+      console.error("Error deleting message:", error);
+      showError("Failed", "Failed to delete message", "delete_message_error");
     } finally {
       setIsDeleteDialogOpen(false);
+      setIsDisabled(false); // Re-enable the button after the operation
     }
   };
 
@@ -130,5 +135,6 @@ export default function useChatMessage(
     handleMessageSettingsPanelPosition,
     setCurrentUserId,
     handleClickOutside,
+    isDisabled,
   };
 }

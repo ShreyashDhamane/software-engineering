@@ -123,9 +123,7 @@ export default function useLikeIconTextWithTooltip(
       }
     } finally {
       // Re-enable the button after 2 seconds
-      setTimeout(() => {
-        setIsDisabled(false);
-      }, 2000);
+      setIsDisabled(false);
     }
   };
 

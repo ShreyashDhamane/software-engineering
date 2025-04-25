@@ -28,7 +28,7 @@ export default function useUserPostHeader(post_user_id, setPosts, post_id) {
     }
   }, []);
 
-  const throttledHandleOnFollow = throttle(async (val) => {
+  const handleOnFollow = async (val) => {
     try {
       // Check for user inside the function
       let user = null;
@@ -62,7 +62,7 @@ export default function useUserPostHeader(post_user_id, setPosts, post_id) {
     } finally {
       setIsFollowButtonDisabled(false);
     }
-  }, 2000);
+  };
 
   const handleDeletePost = async () => {
     try {
@@ -95,7 +95,7 @@ export default function useUserPostHeader(post_user_id, setPosts, post_id) {
 
   return {
     isFollowButtonDisabled,
-    throttledHandleOnFollow,
+    handleOnFollow,
     user_id: userId, // Return the state variable
     isPostOptionListVisible,
     setIsPostOptionListVisible,

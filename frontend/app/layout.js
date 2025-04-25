@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { WebSocketProvider } from "@/contexts/WebSocketContext";
 import FCMWrapper from "@/contexts/FCMWrapper";
 import { ToastContainer } from "react-toastify";
+import ErrorBoundary from "@/components/atom/ErrorBoundary/ErrorBoundary";
 
 export const metadata = {
   title: "Nightwalkers",
@@ -21,23 +22,25 @@ export default function RootLayout({ children }) {
     <html lang="en">
       {/* <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}> */}
       <body className={`antialiased bg-bglinkedin`}>
-        <AuthProvider>
-          <WebSocketProvider>
-            <NotificationProvider>
-              <ToastContainer />
-              <ToastNotifications />
-              <FCMWrapper />
-              {children}
-              <Toaster
-                position="top-right"
-                toastOptions={{
-                  className: "my-toast",
-                  duration: 5000,
-                }}
-              />
-            </NotificationProvider>
-          </WebSocketProvider>
-        </AuthProvider>
+        <ErrorBoundary fallback={<div>Something went wrong</div>}>
+          <AuthProvider>
+            <WebSocketProvider>
+              <NotificationProvider>
+                <ToastContainer />
+                <ToastNotifications />
+                <FCMWrapper />
+                {children}
+                <Toaster
+                  position="top-right"
+                  toastOptions={{
+                    className: "my-toast",
+                    duration: 5000,
+                  }}
+                />
+              </NotificationProvider>
+            </WebSocketProvider>
+          </AuthProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

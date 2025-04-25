@@ -43,6 +43,7 @@ const Message = ({
     handleMessageSettingsPanelPosition,
     setCurrentUserId,
     handleClickOutside,
+    isDisabled,
   } = useChatMessage(
     message,
     openSettingsId,
@@ -209,16 +210,14 @@ const Message = ({
                 </div>
               </div>
             </div>
-            <div>
-              <ChatInput
-                selectedUser={selectedUser}
-                setChatUserList={setChatUserList}
-                isEdit={true}
-                messageId={message.id}
-                initialContent={message.content}
-                closeEditDialog={() => setIsEditDialogOpen(false)}
-              />
-            </div>
+            <ChatInput
+              selectedUser={selectedUser}
+              setChatUserList={setChatUserList}
+              isEdit={true}
+              messageId={message.id}
+              initialContent={message.content}
+              closeEditDialog={() => setIsEditDialogOpen(false)}
+            />
           </div>
         </div>
       )}
@@ -232,6 +231,7 @@ const Message = ({
                 <button
                   className="text-forum-subheading2 px-4 py-2 rounded-full border border-gray-600 hover:text-forum-heading"
                   onClick={() => deleteMessage("everyone")}
+                  disabled={isDisabled}
                 >
                   Delete for everyone
                 </button>
@@ -239,12 +239,14 @@ const Message = ({
               <button
                 className="text-forum-subheading2 px-4 py-2 rounded-full border border-gray-600 hover:text-forum-heading"
                 onClick={() => deleteMessage("self")}
+                disabled={isDisabled}
               >
                 Delete for me
               </button>
               <button
                 className="text-forum-subheading2 px-4 py-2 rounded-full border border-gray-600 hover:text-forum-heading"
                 onClick={() => setIsDeleteDialogOpen(false)}
+                disabled={isDisabled}
               >
                 Cancel
               </button>

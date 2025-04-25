@@ -13,6 +13,7 @@ export default function usePostFooterIconList(
   const [userHasLiked, setUserHasLiked] = useState(post.user_has_liked);
   const [likeType, setLikeType] = useState(post.like_type);
   const { showError, showWarning, showSuccess } = useNotification();
+  const [isDisabled, setIsDisabled] = useState(false); // State to track if the button is disabled
   const handleRepost = async () => {
     let user = null;
     if (typeof window !== "undefined") {
@@ -29,15 +30,7 @@ export default function usePostFooterIconList(
     }
     // repost
     try {
-      // const response
-      user = null;
-      if (typeof window !== "undefined") {
-        user = JSON.parse(localStorage.getItem("user"));
-      }
-      if (!user) {
-        showError("Please login to repost. User not found.");
-        return;
-      }
+      setIsDisabled(true); // Disable the button to prevent multiple clicks
       const newRepost = {
         id: 0,
         original_post_id: post.id,
@@ -87,6 +80,8 @@ export default function usePostFooterIconList(
     } catch (error) {
       showError(error.message);
       console.error("Error reposting post", error);
+    } finally {
+      setIsDisabled(false); // Re-enable the button after the operation
     }
   };
 
@@ -105,5 +100,6 @@ export default function usePostFooterIconList(
     setLikeType,
     handleRepost,
     handleReportPostClick,
+    isDisabled,
   };
 }

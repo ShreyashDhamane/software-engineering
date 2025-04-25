@@ -26,7 +26,7 @@ export default function UserPostHeader({
 }) {
   const {
     isFollowButtonDisabled,
-    throttledHandleOnFollow,
+    handleOnFollow,
     user_id,
     isPostOptionListVisible,
     setIsPostOptionListVisible,
@@ -130,7 +130,7 @@ export default function UserPostHeader({
             } px-2 rounded-md hover:cursor-pointer hover:text-blue-800 relative -top-2`}
             onClick={() => {
               if (isFollowButtonDisabled) return;
-              throttledHandleOnFollow(!is_following_author);
+              handleOnFollow(!is_following_author);
             }}
           >
             {user_id !== post_user_id &&

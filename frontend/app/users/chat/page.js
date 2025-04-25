@@ -87,6 +87,7 @@ const ChatHome = () => {
                 setChatUserList={setChatUserList}
                 setIsSidebarOpen={() => setIsSidebarOpen(false)}
                 listOfUsersTyping={listOfUsersTyping}
+                selectedUser={selectedUser}
               />
             )}
           </div>
@@ -108,6 +109,7 @@ const ChatHome = () => {
                     setChatUserList={setChatUserList}
                     setIsSidebarOpen={setIsSidebarOpen}
                     listOfUsersTyping={listOfUsersTyping}
+                    selectedUser={selectedUser}
                   />
                 )}
               </div>

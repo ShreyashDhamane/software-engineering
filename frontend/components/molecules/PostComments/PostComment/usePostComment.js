@@ -6,12 +6,7 @@ import reportCategories from "@/constants/reportCategories";
 
 const likeTypes = ["Like", "Clap", "Support", "Heart", "Bulb", "Laugh"];
 
-export default function usePostComment(
-  comment,
-  post_id,
-  original_post_id,
-  is_repost
-) {
+export default function usePostComment(comment) {
   const [isTooltipVisible, setTooltipVisible] = useState(false);
   const [userHasLiked, setUserHasLiked] = useState(comment.user_has_liked);
   const [likeType, setLikeType] = useState(comment.like_type);
@@ -123,9 +118,7 @@ export default function usePostComment(
       console.error("Error liking the post:", error);
     } finally {
       // Re-enable the button after 2 seconds
-      setTimeout(() => {
-        setIsDisabled(false);
-      }, 2000);
+      setIsDisabled(false);
     }
   }; // Debounce for 2 seconds
 

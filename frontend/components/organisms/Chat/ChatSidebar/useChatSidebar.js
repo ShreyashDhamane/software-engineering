@@ -6,11 +6,15 @@ export default function useChatSidebar({
   setSelectedUser,
   setChatUserList,
   setIsSidebarOpen,
+  selectedUser,
 }) {
   const { handleUserSelection } = useWebSocket();
 
   const handleUserSelect = async (chat) => {
     try {
+      //if the selected user is already selected, do nothing
+      if (selectedUser?.user.id === chat.user.id) return;
+
       setSelectedUser(chat);
       //if unread count is greater than 0, set all messages to read
       if (chat.unread_count == 0) return;

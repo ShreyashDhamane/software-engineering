@@ -21,6 +21,7 @@ const PostFooterIconList = ({
     setLikeType,
     handleRepost,
     handleReportPostClick,
+    isDisabled,
   } = usePostFooterIconList(post, setPosts, setShowReportUserDialog);
 
   useEffect(() => {
@@ -29,51 +30,46 @@ const PostFooterIconList = ({
 
   return (
     <div className="flex flex-1 relative">
-      <div className="flex-1 group ">
-        {/* like option list */}
-        <LikeIconTextWithTooltip
-          iconData={iconsData.like}
-          post_id={post.id}
-          userHasLiked={userHasLiked}
-          setUserHasLiked={setUserHasLiked}
-          likeType={likeType}
-          setLikeType={setLikeType}
-          setLikesCount={setLikesCount}
-          is_repost={post.is_repost}
-          original_post_id={post.original_post_id}
-        />
-      </div>
-      <div
+      <LikeIconTextWithTooltip
+        iconData={iconsData.like}
+        post_id={post.id}
+        userHasLiked={userHasLiked}
+        setUserHasLiked={setUserHasLiked}
+        likeType={likeType}
+        setLikeType={setLikeType}
+        setLikesCount={setLikesCount}
+        is_repost={post.is_repost}
+        original_post_id={post.original_post_id}
+      />
+      <IconText
+        src={iconsData.comment.src}
+        width={iconsData.comment.width}
+        height={iconsData.comment.height}
+        alt={iconsData.comment.alt}
+        text={iconsData.comment.text}
         className="flex-1 flex justify-center items-center"
         onClick={handleClickOnComment}
-      >
-        <IconText
-          src={iconsData.comment.src}
-          width={iconsData.comment.width}
-          height={iconsData.comment.height}
-          alt={iconsData.comment.alt}
-          text={iconsData.comment.text}
-        />
-      </div>
-      <div className="flex-1" onClick={handleRepost}>
-        <IconText
-          src={iconsData.repost.src}
-          width={iconsData.repost.width}
-          height={iconsData.repost.height}
-          alt={iconsData.repost.alt}
-          text={iconsData.repost.text}
-        />
-      </div>
-      <div className="flex-1" onClick={handleReportPostClick}>
-        <IconText
-          src={iconsData.report.src}
-          width={iconsData.report.width}
-          height={iconsData.report.height}
-          alt={iconsData.report.alt}
-          text={isReported ? "Reported" : iconsData.report.text}
-          theme={isReported ? "red" : null}
-        />
-      </div>
+      />
+      <IconText
+        src={iconsData.repost.src}
+        width={iconsData.repost.width}
+        height={iconsData.repost.height}
+        alt={iconsData.repost.alt}
+        text={iconsData.repost.text}
+        className="flex-1"
+        onClick={handleRepost}
+        disabled={isDisabled}
+      />
+      <IconText
+        src={iconsData.report.src}
+        width={iconsData.report.width}
+        height={iconsData.report.height}
+        alt={iconsData.report.alt}
+        text={isReported ? "Reported" : iconsData.report.text}
+        theme={isReported ? "red" : null}
+        className="flex-1"
+        onClick={handleReportPostClick}
+      />
     </div>
   );
 };

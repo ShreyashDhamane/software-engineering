@@ -26,6 +26,7 @@ const ChatInput = ({
     handleChange,
     handleTypingActivity,
     handleOnBlur,
+    isDisabled,
   } = useChatInput(
     selectedUser,
     setChatUserList,
@@ -74,7 +75,10 @@ const ChatInput = ({
           onBlur={handleOnBlur}
         />
       </div>
-      <button onClick={handleSend} disabled={!messageContent.trim()}>
+      <button
+        onClick={handleSend}
+        disabled={!messageContent.trim() || isDisabled}
+      >
         <Image
           src={send3}
           alt="Send"

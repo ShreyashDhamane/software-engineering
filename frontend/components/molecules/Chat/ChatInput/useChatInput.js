@@ -26,6 +26,8 @@ export default function useChatInput(
   const [isTyping, setIsTyping] = useState(false);
   const typingTimeoutRef = useRef(null);
   const { showError } = useNotification();
+  const [isDisabled, setIsDisabled] = useState(false); // State to track if the button is disabled
+
   const {
     emojiPickerRef,
     showEmojiPicker,
@@ -39,25 +41,36 @@ export default function useChatInput(
       handleEditMessage();
       return;
     }
+
     if (!messageContent.trim()) return;
+    try {
+      setIsDisabled(true); // Disable the button to prevent multiple clicks
+      const message_id = Date.now(); // Generate a unique message ID based on timestamp
+      // Create the message object
+      const chatMessage = {
+        type: "chat_message",
+        chat_uuid: selectedUser.chat_uuid,
+        recipient_id: selectedUser.user.id,
+        content: messageContent.trim(),
+        timestamp: new Date().toISOString(),
+        message_id: message_id,
+      };
 
-    const message_id = Date.now(); // Generate a unique message ID based on timestamp
-    // Create the message object
-    const chatMessage = {
-      type: "chat_message",
-      chat_uuid: selectedUser.chat_uuid,
-      recipient_id: selectedUser.user.id,
-      content: messageContent.trim(),
-      timestamp: new Date().toISOString(),
-      message_id: message_id,
-    };
-
-    // Send via WebSocket
-    send(chatMessage);
-    //send notification to the user
-    sendMessageNotification(selectedUser.user.id, selectedUser.user.first_name);
-    //also add the message to the chat user list
-    sendMessageLocalUpdatesAndCleanup(message_id, senderId, chatMessage);
+      // Send via WebSocket
+      send(chatMessage);
+      //send notification to the user
+      sendMessageNotification(
+        selectedUser.user.id,
+        selectedUser.user.first_name
+      );
+      //also add the message to the chat user list
+      sendMessageLocalUpdatesAndCleanup(message_id, senderId, chatMessage);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      showError("Failed", "Failed to send message", "send_message_error");
+    } finally {
+      setIsDisabled(false); // Re-enable the button after the operation
+    }
   };
 
   const handleEditMessage = async () => {
@@ -66,6 +79,7 @@ export default function useChatInput(
       return;
     }
     try {
+      setIsDisabled(true); // Disable the button to prevent multiple clicks
       setChatUserList(
         produce((draft) => {
           const chat = draft.find(
@@ -87,6 +101,8 @@ export default function useChatInput(
     } catch (error) {
       console.error("Error editing message:", error);
       showError("Failed", "Failed to edit message", "edit_message_error");
+    } finally {
+      setIsDisabled(false); // Re-enable the button after the operation
     }
   };
 
@@ -221,5 +237,6 @@ export default function useChatInput(
     handleTypingActivity,
     handleUserTyping,
     handleOnBlur,
+    isDisabled,
   };
 }
